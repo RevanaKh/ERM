@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../../utils/api';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'flowbite-react';
-import { FaEdit } from 'react-icons/fa';
-
+import { FaEdit,FaMoneyBillWave } from 'react-icons/fa';
+import { FaFilePdf ,FaFileExcel } from "react-icons/fa6";
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 const TransaksiPasien = () => {
   const [transaksi, setTransaksi] = useState([]);
   const [selectTransaksi, setselectTransaksi] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+
   const [formData, setFormData] = useState({
     pendaftaran_id: '',
     status_pembayaran: '',
@@ -56,13 +62,119 @@ const TransaksiPasien = () => {
   useEffect(() => {
     fetchtransaksi();
   }, []);
+
+const exportTransaksiToPDF = () => {
+  const doc = new jsPDF();
+
+  const tableColumn = [
+    'ID TRANSAKSI',
+    'TANGGAL',
+    'NAMA PASIEN',
+    'JENIS LAYANAN',
+    'TOTAL BIAYA',
+    'STATUS PEMBAYARAN',
+  ];
+
+  const tableRows = transaksi.map(item => [
+    `ID-${item.id}`,
+    item.waktu_daftar
+      ? new Date(item.waktu_daftar).toLocaleString('id-ID', {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric',
+          hour12: false,
+        })
+      : 'Tidak tersedia',
+    item.nama_pasien,
+    item.metodePembayaran,
+    `Rp. ${item.harga_jual}`,
+    item.status_pembayaran,
+  ]);
+
+  doc.text('Data Transaksi', 14, 15);
+  doc.autoTable({
+    head: [tableColumn],
+    body: tableRows,
+    startY: 20,
+    styles: { fontSize: 8 },
+    headStyles: { fillColor: [0, 182, 134] },
+  });
+
+  doc.save('data-transaksi.pdf');
+};
+
+const exportTransaksiToExcel = () => {
+  const worksheetData = transaksi.map(item => ({
+    'ID TRANSAKSI': `ID-${item.id}`,
+    'TANGGAL': item.waktu_daftar
+      ? new Date(item.waktu_daftar).toLocaleString('id-ID', {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric',
+          hour12: false,
+        })
+      : 'Tidak tersedia',
+    'NAMA PASIEN': item.nama_pasien,
+    'JENIS LAYANAN': item.metodePembayaran,
+    'TOTAL BIAYA': item.harga_jual,
+    'STATUS PEMBAYARAN': item.status_pembayaran,
+  }));
+
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData);
+  const workbook = XLSX.utils.book_new();
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Transaksi');
+
+  const excelBuffer = XLSX.write(workbook, {
+    bookType: 'xlsx',
+    type: 'array',
+  });
+
+  const data = new Blob([excelBuffer], { type: 'application/octet-stream' });
+  saveAs(data, 'data-transaksi.xlsx');
+};
+
+
   return (
     <>
       <div className="min-h-screen w-full bg-[#FAF7F2] py-5">
         <div className="bg-white mb-2 shadow-lg mt-[20px] flex justify-center items-center to-red-500 w-full h-[100px] rounded-md">
-          <p className="text-[#00B686] font-bold">Data Pembayaran</p>
+          <p className="text-[#00B686] text-[25px] font-bold">Transaksi Pasien</p>
         </div>
-        <div className="bg-white shadow-lg flex justify-center items-center to-red-500 w-full min-h-[100px] p-5 ">
+          <div className="w-full flex justify-between flex-col md:flex-row items-center px-6 py-2 min-h-[70px] bg-black mt-4 rounded-t-lg">
+  <div className="flex items-center gap-3 text-white">
+    <FaMoneyBillWave className="text-[20px]" />
+    <p className="font-bold text-[20px]">Daftar Transaksi</p>
+  </div>
+<div className='flex flex-col md:flex-row gap-3'>
+
+  <button
+    type="button"
+    onClick={exportTransaksiToPDF}
+    className="flex items-center gap-2 text-white bg-red-600 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2 transition duration-150"
+  >
+    <FaFilePdf className="text-[20px]" />
+    Unduh PDF
+  </button>
+    <button
+    type="button"
+     onClick={exportTransaksiToExcel}
+    className="flex items-center gap-2 text-white bg-green-600 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2 transition duration-150"
+  >
+    <FaFileExcel className="text-[20px]" />
+    Unduh EXCEL
+  </button>
+    </div>
+</div>
+
+        <div className="bg-white rounded-b-lg shadow-lg flex flex-col gap-3 justify-center items-center to-red-500 w-full min-h-[100px] p-5 ">
+           <input
+       type="number"
+  placeholder="Cari ID Transaksi..."
+  value={searchTerm}
+  onChange={(e) => setSearchTerm(e.target.value)}
+      className="border border-gray-300 rounded-lg px-4 py-2 w-full "
+    />
           <div className="relative overflow-x-auto shadow-lg w-full">
             <table className="w-full text-sm text-left  rtl:text-right text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-white uppercase bg-[#00B686] ">
@@ -97,8 +209,20 @@ const TransaksiPasien = () => {
                       Tidak ada data Transaksi
                     </td>
                   </tr>
-                ) : (
-                  transaksi.map((data) => (
+                ) :transaksi.filter((data) =>
+      String(data.id).includes(searchTerm)
+    ).length === 0 ? (
+    <tr>
+      <td colSpan="7" className="text-center py-4 text-gray-500">
+        Data tidak ditemukan
+      </td>
+    </tr>
+  ) : (
+                  transaksi.filter((data) =>
+  String(data.id).includes(searchTerm)
+)
+
+    .map((data) => (
                     <tr key={data.id} className="bg-white border-b text-black hover:bg-gray-50 border-gray-200">
                       <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                         ID-{data.id}

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import api from '../../../utils/api';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'flowbite-react';
+
 const FormTambahObat = ({ onSuccess }) => {
+  const [Openmodal , setOpenModal] = useState(false)
   const [formData, setFormData] = useState({
     nama_obat: '',
     jenis_obat: '',
@@ -34,8 +37,16 @@ const FormTambahObat = ({ onSuccess }) => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg mt-[20px] shadow-lg mb-6 max-w-xl">
-      <h2 className="text-lg font-semibold mb-4">Tambah Data Obat</h2>
+    <>
+      <Button color="green" onClick={() => setOpenModal(true)}>
+            Tambah Obat
+          </Button>
+           <Modal show={Openmodal} onClose={() => setOpenModal(false)}>
+                  <ModalHeader className="bg-white">
+                    <h2 className="text-xl font-bold text-center text-teal-500">Tambah Obat</h2>
+                  </ModalHeader>
+                  <ModalBody className="bg-white">
+          <h2 className="text-lg font-semibold mb-4">Tambah Data Obat</h2>
       {error && <p className="text-red-500 mb-2">{error}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
         <input type="text" name="nama_obat" placeholder="Nama Obat" value={nama_obat} onChange={handleChange} className="mt-1 block w-full border rounded-md p-2 border-gray-300 focus:ring focus:ring-blue-200" required />
@@ -55,7 +66,10 @@ const FormTambahObat = ({ onSuccess }) => {
           {loading ? 'Menyimpan...' : 'Tambah Obat'}
         </button>
       </form>
-    </div>
+                  </ModalBody>
+                </Modal>
+
+    </>
   );
 };
 

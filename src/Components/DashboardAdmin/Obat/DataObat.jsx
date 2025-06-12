@@ -3,13 +3,18 @@ import ModalEditObat from './ModalEditObat';
 import ModalDeleteObat from './ModalDeleteObat';
 import api from '../../../utils/api';
 import { FaEdit, FaTrash } from 'react-icons/fa';
-
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 import FormTambahObat from './Formtambahobat';
 const DataObat = () => {
   const [dataObat, setDataObat] = useState([]);
   const [selectedObat, setSelectedObat] = useState({});
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  
   const fetchObat = async () => {
     try {
       const res = await api.get('/obat/dataobat');
@@ -44,11 +49,23 @@ const DataObat = () => {
 
   return (
     <>
-      <div className="bg-white shadow-lg mt-[20px] flex justify-center items-center to-red-500 w-full min-h-[100px] rounded-md">
-        <FormTambahObat onSuccess={fetchObat} />
-      </div>
-      <div className="p-6">
-        <h1 className="text-2xl font-semibold mb-4">Data Obat</h1>
+     <div className="bg-white shadow-lg mt-[20px] mb-2 flex justify-center items-center to-red-500 w-full h-[100px] rounded-md">
+          <p className="text-[#00B686] font-bold text-[25px]">Manajemen Data Obat</p>
+        </div>
+    <div className="bg-white shadow-lg mt-[20px] flex justify-between px-7 items-center w-full min-h-[70px] rounded-t-md border-b-2  border-[#1DE9B6]">
+  <h1 className="text-2xl font-semibold">Daftar Obat</h1>
+  <FormTambahObat onSuccess={fetchObat} />
+</div>
+
+       <div className="bg-white flex flex-col shadow-lg rounded-b-lg w-full p-6 space-y-6">
+    <input
+       type="text"
+  placeholder="Cari Nama Pasien..."
+  value={searchTerm}
+  onChange={(e) => setSearchTerm(e.target.value)}
+      className="border border-gray-300 rounded-lg  px-4 py-2 w-full "
+    />
+    <div className="overflow-x-auto w-full">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 shadow-lg dark:text-gray-400">
           <thead className="text-xs text-white uppercase bg-[#00B686]">
             <tr>
@@ -82,8 +99,19 @@ const DataObat = () => {
                   Tidak ada Obat
                 </td>
               </tr>
-            ) : (
-              dataObat.map((obat) => (
+            ) : dataObat.filter((data) =>
+      data.nama_obat.toLowerCase().includes(searchTerm.toLowerCase())
+    ).length === 0 ? (
+    <tr>
+      <td colSpan="7" className="text-center py-4 text-gray-500">
+        Data tidak ditemukan
+      </td>
+    </tr>
+  ) : (
+               dataObat
+      .filter((data) =>
+        data.nama_obat.toLowerCase().includes(searchTerm.toLowerCase())
+      ).map((obat) => (
                 <tr key={obat.id} className="bg-white border-b hover:bg-gray-50 text-black border-gray-200">
                   <td className="px-6 py-4">{obat.id}</td>
                   <td className="px-6 py-4">{obat.nama_obat}</td>
@@ -125,7 +153,7 @@ const DataObat = () => {
             )}
           </tbody>
         </table>
-
+</div>
         {/* Modal */}
         <ModalEditObat show={showEditModal} obat={selectedObat} onUpdate={handleUpdate} onClose={() => setShowEditModal(false)} />
         <ModalDeleteObat show={showDeleteModal} obat={selectedObat} onDelete={handleDelete} onClose={() => setShowDeleteModal(false)} />

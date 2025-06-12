@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import api from '../../../utils/api';
 import { Modal, ModalBody, ModalHeader } from 'flowbite-react';
+import { FaPlus } from "react-icons/fa6";
+
 function TambahApoteker() {
   const [openModal, setOpenModal] = useState(false);
   const [form, setForm] = useState({
@@ -44,9 +46,13 @@ function TambahApoteker() {
 
   return (
     <>
-      <button onClick={() => setOpenModal(true)} className="focus:outline-none text-white  bg-[#00B686] hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">
-        Tambah Apoteker
-      </button>
+      <button
+  onClick={() => setOpenModal(true)}
+  className="flex items-center gap-2 text-white bg-[#00B686] hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 transition duration-150"
+>
+  <FaPlus className="text-[20px]" />
+  Tambah Apoteker
+</button>
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
         <ModalHeader className="bg-white">
           <h2 className="text-xl font-bold mb-6 text-center text-teal-500">Tambah Apoteker Baru</h2>

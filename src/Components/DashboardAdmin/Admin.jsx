@@ -8,6 +8,8 @@ import DataObat from './Obat/DataObat';
 import TabelPendaftaran from './Pendaftaran/TabelPendaftaran';
 import DataApoteker from './Apoteker/DataApoteker';
 import TransaksiPasien from './Pasien/TransaksiPasien';
+import Datauser from './Users/Datauser';
+import Laporan from './Laporan/Laporan';
 const Admin = ({ setIsAuthenticated, setUser }) => {
   return (
     <div className="min-h-screen w-full bg-[#FAF7F2] ">
@@ -22,6 +24,8 @@ const Admin = ({ setIsAuthenticated, setUser }) => {
             <Route path="pendaftaran" element={<TabelPendaftaran />} />
             <Route path="apoteker" element={<DataApoteker />} />
             <Route path="transaksi" element={<TransaksiPasien />} />
+            <Route path="datauser" element={<Datauser />} />
+            <Route path="laporan" element={<Laporan />} />
           </Routes>
         </div>
       </div>

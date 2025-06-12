@@ -23,8 +23,8 @@ const Modaldokter = ({ modalDokter, jadwal, onUpdate, onClose }) => {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-3 flex flex-col">
-          <select name="hari" value={formData.hari} onChange={handleChange}>
+        <form onSubmit={handleSubmit} className="space-y-3 flex  flex-col ">
+          <select name="hari" value={formData.hari} className='border border-gray-300 rounded-lg' onChange={handleChange}>
             <option value="">-- Pilih Hari --</option>
             <option value="senin">Senin</option>
             <option value="selasa">Selasa</option>
@@ -35,13 +35,13 @@ const Modaldokter = ({ modalDokter, jadwal, onUpdate, onClose }) => {
             <option value="minggu">Minggu</option>
           </select>
           <label>Jam Mulai:</label>
-          <input type="time" name="jam_mulai" value={formData.jam_mulai} onChange={handleChange} />
+          <input type="time" name="jam_mulai" className='border border-gray-300 rounded-lg' value={formData.jam_mulai} onChange={handleChange} />
 
           <label>Jam Selesai:</label>
-          <input type="time" name="jam_selesai" value={formData.jam_selesai} onChange={handleChange} />
+          <input type="time" name="jam_selesai" className='border border-gray-300 rounded-lg' value={formData.jam_selesai} onChange={handleChange} />
 
           <label>Status:</label>
-          <select name="status" value={formData.status} onChange={handleChange}>
+          <select name="status" value={formData.status} className='border border-gray-300 rounded-lg' onChange={handleChange}>
             <option value="">-- Pilih Status --</option>
             <option value="aktif">Aktif</option>
             <option value="tidak aktif">Nonaktif</option>

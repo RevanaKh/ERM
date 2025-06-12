@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../../utils/api';
+import { FaPlus } from "react-icons/fa6";
+
 const TambahJadwal = ({ data }) => {
   const [modaltambah, setModalTambah] = useState(false);
   const [Datadokter, SetdataDokter] = useState([]);
@@ -38,9 +40,14 @@ const TambahJadwal = ({ data }) => {
   };
   return (
     <>
-      <button type="button" onClick={() => setModalTambah(true)} class="focus:outline-none text-white  bg-[#00B686] hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">
-        Tambah Jadwal{' '}
-      </button>
+      
+      <button
+  onClick={() => setModalTambah(true)}
+  className="flex items-center gap-2 text-white bg-[#00B686] hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 transition duration-150"
+>
+  <FaPlus className="text-[20px]" />
+  Tambah Jadwal
+</button>
       <div tabIndex="-1" aria-hidden="true" className={`fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center ${modaltambah ? 'flex' : 'hidden'}`}>
         <div className="bg-white p-6 rounded-lg w-full max-w-2xl">
           <div className="flex justify-between items-center border-b pb-3 mb-4">
