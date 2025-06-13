@@ -58,10 +58,21 @@ const Pendaftaran = ({ setAntrian, setError, setMessage, setOpen }) => {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* NIK */}
           <div className="flex flex-col md:flex-row justify-between ">
-            <div>
-              <label className="block text-sm font-medium">NIK</label>
-              <input type="number" name="nik" value={formData.nik} onChange={handleChange} className="mt-1 block w-full border rounded-md p-2 border-gray-300 focus:ring focus:ring-blue-200" required />
-            </div>
+           <div>
+  <label className="block text-sm font-medium">NIK</label>
+  <input
+    type="text"
+    name="nik"
+    maxLength={16}
+    pattern="\d{16}"
+    value={formData.nik}
+    onChange={handleChange}
+    className="mt-1 block w-full border rounded-md p-2 border-gray-300 focus:ring focus:ring-blue-200"
+    required
+    placeholder="Masukkan 16 digit NIK"
+  />
+</div>
+
 
             <div>
               <label className="block text-sm font-medium">Nama</label>
