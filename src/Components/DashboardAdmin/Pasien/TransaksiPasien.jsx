@@ -11,6 +11,7 @@ const TransaksiPasien = () => {
   const [transaksi, setTransaksi] = useState([]);
   const [selectTransaksi, setselectTransaksi] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+const [loading ,setLoading ] = useState(false)
 
   const [formData, setFormData] = useState({
     pendaftaran_id: '',
@@ -39,12 +40,15 @@ const TransaksiPasien = () => {
     setEditModal(true);
   };
   const handleUpdate = async (id, updatedData) => {
+    setLoading(true)
     try {
       const res = await api.put(`/pasien/${id}`, updatedData);
       setTransaksi(transaksi.map((p) => (p.id === id ? res.data : p)));
+      setLoading(false)
       await fetchtransaksi();
     } catch (err) {
       console.error(err.response?.data?.message || 'Gagal memperbarui data');
+      setLoading(false)
     }
   };
   const handleSave = async () => {
@@ -278,7 +282,7 @@ const exportTransaksiToExcel = () => {
           </div>
 
           <button type="button" onClick={handleSave} className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition duration-200">
-            Simpan Status
+            {loading ? 'Menyimpan...' :'Simpan Status'}
           </button>
         </ModalBody>
       </Modal>

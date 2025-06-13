@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'flowbite-react';
 
-const ModalEditApotker = ({ onUpdate, datas, OpenEdit, setOpenEdit }) => {
+const ModalEditApotker = ({ onUpdate, datas, OpenEdit, setOpenEdit ,loading}) => {
   const [formData, setFormData] = useState({ ...datas });
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const ModalEditApotker = ({ onUpdate, datas, OpenEdit, setOpenEdit }) => {
             <textarea name="alamat" value={formData.alamat || ''} onChange={handleChange} className="w-full border border-gray-300 rounded-md px-3 py-2" />
           </div>
           <button type="submit" className="w-full bg-teal-500 text-white py-3 rounded hover:bg-teal-600">
-            Simpan Perubahan
+            {loading ? 'Menyimpan':'Simpan Perubahan'}
           </button>
         </form>
       </ModalBody>

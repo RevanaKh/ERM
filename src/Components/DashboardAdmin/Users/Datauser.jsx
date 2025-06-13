@@ -17,7 +17,7 @@ const Datauser = () => {
   const [message, setMessage] = useState('');
     const [selectedUser, setSelectedUser] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
-    
+    const [loading , setLoading] = useState('')
   
 const fetchUser = async () => {
     try {
@@ -28,27 +28,33 @@ const fetchUser = async () => {
     }
 }
 const handleUpdate = async (id, updatedData) => {
+  setLoading(true)
     try {
       const res = await api.put(`/users/${id}`, updatedData);
       setUsers(users.map((p) => (p.id === id ? res.data : p)));
       await fetchUser();
+      setLoading(false)
       setMessage('Berhasil mengubah data User');
       setError('');
     } catch (err) {
+      setLoading(false)
       console.error(err.response?.data?.message || 'Gagal memperbarui data');
       setError(`Gagal Memperbarui Data Users ${err.response?.data?.message}`);
       setMessage('');
     }
   };
   const handleDelete = async (id) => {
+    setLoading(true)
     try {
       await api.delete(`/users/${id}`);
       setUsers(users.filter((data) => data.id !== id));
+      setLoading(false)
       await fetchUser();
       setModaldelete(false);
       setMessage('Berhasil menghapus data User');
       setError('');
     } catch (err) {
+      setLoading(false)
       console.log(err.response?.data?.message || 'Failed to delete user');
       setModaldelete(false);
       setError(`Gagal Menghapus Data Users ${err.response?.data?.message}`);
@@ -128,7 +134,7 @@ const exportUserToPDF = () => {
     head: [tableColumn],
     body: tableRows,
     styles: { fontSize: 8 },
-    headStyles: { fillColor: [0, 182, 134] }, // Warna hijau sesuai tombol
+    headStyles: { fillColor: [0, 182, 134] }, 
     startY: 20,
     margin: { horizontal: 10 }
   });
@@ -269,8 +275,8 @@ return (
         </div>
       </div>
         </div>
-        <ModalEditUser data={selectedUser} setEditUser={setEditUser} EditUser={EditUser} onUpdate={handleUpdate} />
-        <ModalDeleteUser data={selectedUser} setModaldelete={setModaldelete} modaldelete={modaldelete} onDelete={handleDelete}/>
+        <ModalEditUser data={selectedUser} loading={loading} setEditUser={setEditUser} EditUser={EditUser} onUpdate={handleUpdate} />
+        <ModalDeleteUser data={selectedUser} loading={loading} setModaldelete={setModaldelete} modaldelete={modaldelete} onDelete={handleDelete}/>
                 </>
 )
 }

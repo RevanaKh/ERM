@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-const Deletejadwal = ({ modalDelete, jadwal, onDelete, onClose }) => {
+const Deletejadwal = ({ modalDelete, jadwal, onDelete, onClose ,loading }) => {
   const [formData, setFormData] = useState({ ...jadwal });
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const Deletejadwal = ({ modalDelete, jadwal, onDelete, onClose }) => {
 
         <div className="flex gap-4 mt-6">
           <button type="button" onClick={handleSubmit} className="w-full bg-red-600 text-white py-3 rounded hover:bg-red-700">
-            Hapus
+            {loading ? 'Menghapus...':'Hapus'}
           </button>
           <button type="button" onClick={onClose} className="w-full bg-gray-300 text-black py-3 rounded hover:bg-gray-400">
             Batal

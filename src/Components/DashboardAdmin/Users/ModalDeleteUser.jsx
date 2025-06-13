@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, ModalHeader, ModalBody } from "flowbite-react";
 
-const ModalDeleteUser = ({ data, onDelete, modaldelete, setModaldelete }) => {
+const ModalDeleteUser = ({ data, onDelete, modaldelete, setModaldelete ,loading }) => {
   const [formData, setFormData] = useState({ ...data });
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const ModalDeleteUser = ({ data, onDelete, modaldelete, setModaldelete }) => {
             onClick={handleSubmit}
             className="w-full bg-red-600 text-white py-3 rounded hover:bg-red-700"
           >
-            Hapus
+            {loading ? 'Menghapus...':'Hapus'}
           </button>
           <button
             type="button"

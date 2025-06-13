@@ -14,6 +14,7 @@ const TabelPendaftaran = () => {
   const [openModalDelete, setModalDelete] = useState(false);
   const [selectDaftar, setSelectDaftar] = useState(null);
 const [searchTerm, setSearchTerm] = useState('');
+const [loading ,setLoading ] = useState(false)
 
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
@@ -26,13 +27,16 @@ const [searchTerm, setSearchTerm] = useState('');
     }
   };
   const handleDelete = async (id) => {
+    setLoading(true)
     try {
       const res = await api.delete(`/pasien/${id}`);
+      setLoading(false)
       setModalDelete(false);
-      await fetchPendaftaran();
       setMessage('Berhasil menghapus data Pendaftran');
+      await fetchPendaftaran();
       setError('');
     } catch (error) {
+      setLoading(false)
       console.error(error.response?.data?.message || 'Gagal menghapus data Pendaftaram');
       setError(`Gagal menghapus data Pendaftaram`);
     }
@@ -259,7 +263,7 @@ const exportToExcel = () => {
             type="button"
             class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 "
           >
-            Hapus
+            {loading ? 'Menghapus...' : 'hapus'}
           </button>
         </ModalFooter>
       </Modal>

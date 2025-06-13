@@ -14,7 +14,7 @@ const DataObat = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  
+  const [loading , setLoading] = useState(false)
   const fetchObat = async () => {
     try {
       const res = await api.get('/obat/dataobat');
@@ -28,21 +28,27 @@ const DataObat = () => {
   }, []);
 
   const handleUpdate = async (id, updatedObat) => {
+    setLoading(true)
     try {
       await api.put(`/obat/${id}`, updatedObat);
       await fetchObat();
+      setLoading(false)
       setShowEditModal(false);
     } catch (err) {
+      setLoading(false)
       console.error(err);
     }
   };
 
   const handleDelete = async (id) => {
+    setLoading(true)
     try {
       await api.delete(`/obat/${id}`);
       await fetchObat();
+      setLoading(false)
       setShowDeleteModal(false);
     } catch (err) {
+      setLoading(false)
       console.error(err);
     }
   };
@@ -60,7 +66,7 @@ const DataObat = () => {
        <div className="bg-white flex flex-col shadow-lg rounded-b-lg w-full p-6 space-y-6">
     <input
        type="text"
-  placeholder="Cari Nama Pasien..."
+  placeholder="Cari Nama Obat..."
   value={searchTerm}
   onChange={(e) => setSearchTerm(e.target.value)}
       className="border border-gray-300 rounded-lg  px-4 py-2 w-full "
@@ -155,8 +161,8 @@ const DataObat = () => {
         </table>
 </div>
         {/* Modal */}
-        <ModalEditObat show={showEditModal} obat={selectedObat} onUpdate={handleUpdate} onClose={() => setShowEditModal(false)} />
-        <ModalDeleteObat show={showDeleteModal} obat={selectedObat} onDelete={handleDelete} onClose={() => setShowDeleteModal(false)} />
+        <ModalEditObat show={showEditModal} loading={loading} obat={selectedObat} onUpdate={handleUpdate} onClose={() => setShowEditModal(false)} />
+        <ModalDeleteObat show={showDeleteModal} loading={loading} obat={selectedObat} onDelete={handleDelete} onClose={() => setShowDeleteModal(false)} />
       </div>
     </>
   );

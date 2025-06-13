@@ -43,11 +43,11 @@ const [searchTerm, setSearchTerm] = useState('');
       SetdataDokter(Datadokter.map((p) => (p.id === id ? res.data : p)));
       setModalEdit(false);
       await fetchdokter();
-      setMessage('Berhasil mengubah data pasien');
+      setMessage('Berhasil mengubah data Dokter');
       setError('');
     } catch (err) {
       console.error(err.response?.data?.message || 'Gagal memperbarui data');
-      setError(`Gagal Memperbarui Data pasien ${err.response?.data?.message}`);
+      setError(`Gagal Memperbarui Data Dokter ${err.response?.data?.message}`);
       setMessage('');
     }
   };

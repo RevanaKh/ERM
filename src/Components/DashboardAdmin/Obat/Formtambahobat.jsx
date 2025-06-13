@@ -49,23 +49,87 @@ const FormTambahObat = ({ onSuccess }) => {
           <h2 className="text-lg font-semibold mb-4">Tambah Data Obat</h2>
       {error && <p className="text-red-500 mb-2">{error}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
-        <input type="text" name="nama_obat" placeholder="Nama Obat" value={nama_obat} onChange={handleChange} className="mt-1 block w-full border rounded-md p-2 border-gray-300 focus:ring focus:ring-blue-200" required />
-        <select name="jenis_obat" value={jenis_obat} onChange={handleChange} className="mt-1 block w-full border rounded-md p-2 border-gray-300 focus:ring focus:ring-blue-200" required>
-          <option value="">-- Pilih Jenis Obat --</option>
-          <option value="kapsul">Kapsul</option>
-          <option value="tablet">Tablet</option>
-          <option value="sirup">Sirup</option>
-        </select>
-        <input type="number" name="harga_jual" placeholder="Harga Jual" value={harga_jual} onChange={handleChange} className="w-full border p-3 rounded-md border-gray-300 focus:ring focus:ring-blue-200" required />
-        <input type="number" name="stok" placeholder="Stok" value={stok} onChange={handleChange} className="w-full border p-3 rounded border-gray-300 focus:ring focus:ring-blue-200" required />
-        <div>
-          <label className="block text-sm font-medium">Tanggal Kadaluarsa</label>
-          <input type="date" name="kadaluarsa" value={kadaluarsa} onChange={handleChange} className="mt-1 block w-full border rounded-md p-2 border-gray-300 focus:ring focus:ring-blue-200" required />
-        </div>
-        <button type="submit" disabled={loading} className="w-full bg-[#1DE9B6] text-white py-3 rounded hover:bg-[#00B686]">
-          {loading ? 'Menyimpan...' : 'Tambah Obat'}
-        </button>
-      </form>
+  <div>
+    <label htmlFor="nama_obat" className="block text-sm font-medium mb-1">Nama Obat</label>
+    <input
+      type="text"
+      id="nama_obat"
+      name="nama_obat"
+      placeholder="Nama Obat"
+      value={nama_obat}
+      onChange={handleChange}
+      className="mt-1 block w-full border rounded-lg p-2 border-gray-300 focus:ring focus:ring-blue-200"
+      required
+    />
+  </div>
+
+  <div>
+    <label htmlFor="jenis_obat" className="block text-sm font-medium mb-1">Jenis Obat</label>
+    <select
+      id="jenis_obat"
+      name="jenis_obat"
+      value={jenis_obat}
+      onChange={handleChange}
+      className="mt-1 block w-full border rounded-lg p-2 border-gray-300 focus:ring focus:ring-blue-200"
+      required
+    >
+      <option value="">-- Pilih Jenis Obat --</option>
+      <option value="kapsul">Kapsul</option>
+      <option value="tablet">Tablet</option>
+      <option value="sirup">Sirup</option>
+    </select>
+  </div>
+
+  <div>
+    <label htmlFor="harga_jual" className="block text-sm font-medium mb-1">Harga Jual</label>
+    <input
+      type="number"
+      id="harga_jual"
+      name="harga_jual"
+      placeholder="Harga Jual"
+      value={harga_jual}
+      onChange={handleChange}
+      className="w-full border p-3 rounded-lg border-gray-300 focus:ring focus:ring-blue-200"
+      required
+    />
+  </div>
+
+  <div>
+    <label htmlFor="stok" className="block text-sm font-medium mb-1">Stok</label>
+    <input
+      type="number"
+      id="stok"
+      name="stok"
+      placeholder="Stok"
+      value={stok}
+      onChange={handleChange}
+      className="w-full border p-3 rounded-lg border-gray-300 focus:ring focus:ring-blue-200"
+      required
+    />
+  </div>
+
+  <div>
+    <label htmlFor="kadaluarsa" className="block text-sm font-medium mb-1">Tanggal Kadaluarsa</label>
+    <input
+      type="date"
+      id="kadaluarsa"
+      name="kadaluarsa"
+      value={kadaluarsa}
+      onChange={handleChange}
+      className="mt-1 block w-full border rounded-lg p-2 border-gray-300 focus:ring focus:ring-blue-200"
+      required
+    />
+  </div>
+
+  <button
+    type="submit"
+    disabled={loading}
+    className="w-full bg-[#1DE9B6] text-white py-3 rounded-lg hover:bg-[#00B686]"
+  >
+    {loading ? 'Menyimpan...' : 'Tambah Obat'}
+  </button>
+</form>
+
                   </ModalBody>
                 </Modal>
 

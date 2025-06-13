@@ -4,6 +4,8 @@ import { FaPlus } from "react-icons/fa6";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'flowbite-react';
 function TambahDokterForm({ fetchdokter }) {
   const [openModal, setOpenModal] = useState(false);
+    const [loading , setLoading] = useState(false)
+  
   const [form, setForm] = useState({
     nama: '',
     email: '',
@@ -24,11 +26,12 @@ function TambahDokterForm({ fetchdokter }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus(null);
-
+setLoading(true)
     try {
       const response = await api.post('/dokter/createdokter', form);
       const data = response.data;
       setStatus({ type: 'success', message: data.message });
+      setLoading(false)
       await fetchdokter();
       setForm({
         nama: '',
@@ -43,6 +46,7 @@ function TambahDokterForm({ fetchdokter }) {
     } catch (err) {
       const errorMsg = err.response?.data?.message || 'Terjadi kesalahan saat mengirim data.';
       setStatus({ type: 'error', message: errorMsg });
+      setLoading(false)
     }
   };
 
@@ -74,8 +78,17 @@ function TambahDokterForm({ fetchdokter }) {
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">NIK</label>
-                <input type="text" name="nik" value={form.nik} onChange={handleChange} required className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" />
-              </div>
+<input
+  type="text"
+  name="nik"
+  value={form.nik}
+  onChange={handleChange}
+  placeholder="NIK"
+  maxLength="16"
+  required
+  pattern="\d{16}"
+  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+/>              </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Jenis Kelamin</label>
                 <select name="jenis_kelamin" value={form.jenis_kelamin} onChange={handleChange} required className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
@@ -108,7 +121,7 @@ function TambahDokterForm({ fetchdokter }) {
                 </select>
               </div>
               <button type="submit" className="w-full bg-teal-500 text-white py-3 rounded hover:bg-teal-600">
-                Tambah Dokter
+                {loading ? 'Menyimpan...' : 'Tambah Dokter'}
               </button>
             </form>
           </div>

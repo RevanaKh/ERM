@@ -16,6 +16,7 @@ const DataDokter = () => {
   const [modalDelete, setModaldelete] = useState(false);
   const [selectedDokter, setSelectedDokter] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+const [loading ,setLoading ] = useState(false)
   
   const fetchdokter = async () => {
     try {
@@ -29,23 +30,29 @@ const DataDokter = () => {
     fetchdokter();
   }, []);
   const handleUpdate = async (id, updatedData) => {
+    setLoading(true)
     try {
       await api.put(`/jadwal/${id}`, updatedData);
       const res = await api.get('/jadwal/getjadwal');
+      setLoading(false)
       await fetchdokter();
       setJadwaldokter(res.data);
       handleCloseModal();
     } catch (err) {
       console.error(err.response?.data?.message || 'Gagal memperbarui data');
+      setLoading(false)
     }
   };
   const handleDelete = async (id) => {
+    setLoading(true)
     try {
       await api.delete(`/jadwal/${id}`);
+      setLoading(false)
       setJadwaldokter(jadwaldokter.filter((jadwal) => jadwal.id !== id));
       await fetchdokter();
       setModaldelete(false);
     } catch (err) {
+      setLoading(false)
       console.log(err.response?.data?.message || 'Failed to delete user');
     }
   };
@@ -229,10 +236,10 @@ const exportJadwalDokterToExcel = () => {
           </div>
         </div>
         <div className={`${modalDokter && 'fixed  inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 '} `}>
-          <Modaldokter modalDokter={modalDokter} jadwal={selectedDokter} onUpdate={handleUpdate} onClose={handleCloseModal} />
+          <Modaldokter modalDokter={modalDokter} loading={loading} jadwal={selectedDokter} onUpdate={handleUpdate} onClose={handleCloseModal} />
         </div>
         <div className={`${modalDelete && 'fixed  inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 '} `}>
-          <Deletejadwal modalDelete={modalDelete} jadwal={selectedDokter} onDelete={handleDelete} onClose={handleCloseModal} />
+          <Deletejadwal modalDelete={modalDelete} loading={loading} jadwal={selectedDokter} onDelete={handleDelete} onClose={handleCloseModal} />
         </div>
       </div>
     </>

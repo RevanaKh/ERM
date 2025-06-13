@@ -17,6 +17,7 @@ const DataApoteker = () => {
   const [OpenEdit, setOpenEdit] = useState(false);
   const [OpenDelete, setOpenDelete] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [loading , setLoading] = useState(false)
   
   const fetchApoteker = async () => {
     try {
@@ -30,25 +31,31 @@ const DataApoteker = () => {
     fetchApoteker();
   }, []);
   const handleUpdate = async (id, updatedData) => {
+    setLoading(true)
     try {
       const res = await api.put(`/apoteker/${id}`, updatedData);
       setData(data.map((p) => (p.id === id ? res.data : p)));
       await fetchApoteker();
+      setLoading(false)
       setMessage('Berhasil mengubah data Apoteker');
       setError('');
     } catch (err) {
       console.error(err.response?.data?.message || 'Gagal memperbarui data');
       setError(`Gagal Memperbarui Data Apoteker `);
+      setLoading(false)
       setMessage('');
     }
   };
   const handleDelete = async (id) => {
+    setLoading(true)
     try {
       await api.delete(`/apoteker/${id}`);
       setData(data.filter((data) => data.id !== id));
       await fetchApoteker();
+      setLoading(false)
       setOpenDelete(false);
     } catch (err) {
+      setLoading(false)
       console.log(err.response?.data?.message || 'Failed to delete user');
     }
   };
@@ -207,8 +214,8 @@ const exportApotekerToExcel = () => {
           </div>
         </div>
       </div>
-      <ModalEditApotker onUpdate={handleUpdate} datas={selectedApotek} setOpenEdit={setOpenEdit} OpenEdit={OpenEdit} />
-      <ModalDeleteApoteker onDelete={handleDelete} datas={selectedApotek} setOpenDelete={setOpenDelete} OpenDelete={OpenDelete} />
+      <ModalEditApotker onUpdate={handleUpdate} loading={loading} datas={selectedApotek} setOpenEdit={setOpenEdit} OpenEdit={OpenEdit} />
+      <ModalDeleteApoteker onDelete={handleDelete} loading={loading} datas={selectedApotek} setOpenDelete={setOpenDelete} OpenDelete={OpenDelete} />
     </>
   );
 };

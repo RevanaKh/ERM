@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-export default function Modaldelete({ modaldelete, data, onClose, onDelete }) {
+export default function Modaldelete({ modaldelete, data, onClose, onDelete ,loading }) {
   const [formData, setFormData] = useState({ ...data });
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export default function Modaldelete({ modaldelete, data, onClose, onDelete }) {
             onClick={handleSubmit}
             className="w-full bg-red-600 text-white py-3 rounded hover:bg-red-700"
           >
-            Hapus
+            {loading ?  'Menghapus...':'Hapus'}
           </button>
           <button
             type="button"

@@ -65,15 +65,18 @@ const Datapasien = () => {
     setSelectedPasien(null);
   };
   const handleUpdate = async (id, updatedData) => {
+    setLoading(true)
     try {
       const res = await api.put(`/users/${id}`, updatedData);
       setDatapasien(datapasien.map((p) => (p.id === id ? res.data : p)));
+      setLoading(false)
       await fetchpasien();
       handleCloseModal();
       setMessage('Berhasil mengubah data pasien');
       setError('');
     } catch (err) {
       console.error(err.response?.data?.message || 'Gagal memperbarui data');
+      setLoading(false)
       setError(`Gagal Memperbarui Data pasien ${err.response?.data?.message}`);
       setMessage('');
     }
@@ -83,16 +86,20 @@ const Datapasien = () => {
     setModaldelete(true);
   };
   const handleDelete = async (id) => {
+    setLoading(true)
     try {
       await api.delete(`/users/${id}`);
       setDatapasien(datapasien.filter((data) => data.id !== id));
       await fetchpasien();
+    setLoading(false)
+
       setModaldelete(false);
       setMessage('Berhasil menghapus data pasien');
       setError('');
     } catch (err) {
       console.log(err.response?.data?.message || 'Failed to delete user');
       setModaldelete(false);
+      setLoading(false)
       setError(`Gagal Menghapus Data Pasien ${err.response?.data?.message}`);
       setMessage('');
     }
@@ -297,10 +304,10 @@ const exportPasienToPDF = () => {
 </div>
 
         <div className={`${modalpasien && 'fixed  inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 '} `}>
-          <Modalpasien modalpasien={modalpasien} data={selectedPasien} onClose={handleCloseModal} onUpdate={handleUpdate} />
+          <Modalpasien modalpasien={modalpasien} setModalpasien={setModalpasien} loading={loading} data={selectedPasien} onClose={handleCloseModal} onUpdate={handleUpdate} />
         </div>
         <div className={`${modaldelete && 'fixed  inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 '} `}>
-          <Modaldelete modaldelete={modaldelete} data={selectedPasien} onClose={handleCloseModal} onDelete={handleDelete} />
+          <Modaldelete modaldelete={modaldelete} setModaldelete={setModaldelete} loading={loading} data={selectedPasien} onClose={handleCloseModal} onDelete={handleDelete} />
         </div>
       </div>
     </>

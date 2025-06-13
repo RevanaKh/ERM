@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-const Modaldokter = ({ modalDokter, jadwal, onUpdate, onClose }) => {
+const Modaldokter = ({ modalDokter, jadwal, onUpdate, onClose ,loading}) => {
   const [formData, setFormData] = useState({ ...jadwal });
   useEffect(() => {
     setFormData({ ...jadwal });
@@ -47,7 +47,7 @@ const Modaldokter = ({ modalDokter, jadwal, onUpdate, onClose }) => {
             <option value="tidak aktif">Nonaktif</option>
           </select>
           <button type="submit" className="w-full bg-teal-500 text-white py-3 rounded hover:bg-teal-600">
-            Simpan Perubahan
+            {loading ? 'Menyimpan...' :'Simpan Perubahan'}
           </button>
         </form>
       </div>

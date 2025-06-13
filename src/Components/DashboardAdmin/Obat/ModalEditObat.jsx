@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const ModalEditObat = ({ show, obat, onUpdate, onClose }) => {
+const ModalEditObat = ({ show, obat, onUpdate, onClose ,loading }) => {
   const [formData, setFormData] = useState({ ...obat });
 
   useEffect(() => {
@@ -26,24 +26,74 @@ const ModalEditObat = ({ show, obat, onUpdate, onClose }) => {
             ✕
           </button>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <input type="text" name="nama_obat" value={formData.nama_obat} onChange={handleChange} placeholder="Nama Obat" className="w-full border p-3 rounded" required />
+       <form onSubmit={handleSubmit} className="space-y-3">
+  <div>
+    <label htmlFor="nama_obat" className="block text-sm font-medium mb-1">Nama Obat</label>
+    <input
+      type="text"
+      id="nama_obat"
+      name="nama_obat"
+      value={formData.nama_obat}
+      onChange={handleChange}
+      placeholder="Nama Obat"
+      className="w-full border border-gray-300 p-3 rounded-lg"
+      required
+    />
+  </div>
 
-          <select name="jenis_obat" value={formData.jenis_obat} onChange={handleChange} className="w-full border p-3 rounded" required>
-            <option value="">-- Pilih Jenis --</option>
-            <option value="kapsul">Kapsul</option>
-            <option value="tablet">Tablet</option>
-            <option value="sirup">Sirup</option>
-          </select>
+  <div>
+    <label htmlFor="jenis_obat" className="block text-sm font-medium mb-1">Jenis Obat</label>
+    <select
+      id="jenis_obat"
+      name="jenis_obat"
+      value={formData.jenis_obat}
+      onChange={handleChange}
+      className="w-full border border-gray-300 p-3 rounded-lg"
+      required
+    >
+      <option value="">-- Pilih Jenis --</option>
+      <option value="kapsul">Kapsul</option>
+      <option value="tablet">Tablet</option>
+      <option value="sirup">Sirup</option>
+    </select>
+  </div>
 
-          <input type="number" name="harga_jual" value={formData.harga_jual} onChange={handleChange} placeholder="Harga Jual" className="w-full border p-3 rounded" required />
+  <div>
+    <label htmlFor="harga_jual" className="block text-sm font-medium mb-1">Harga Jual</label>
+    <input
+      type="number"
+      id="harga_jual"
+      name="harga_jual"
+      value={formData.harga_jual}
+      onChange={handleChange}
+      placeholder="Harga Jual"
+      className="w-full border border-gray-300 p-3 rounded-lg"
+      required
+    />
+  </div>
 
-          <input type="number" name="stok" value={formData.stok} onChange={handleChange} placeholder="Stok" className="w-full border p-3 rounded" required />
+  <div>
+    <label htmlFor="stok" className="block text-sm font-medium mb-1">Stok</label>
+    <input
+      type="number"
+      id="stok"
+      name="stok"
+      value={formData.stok}
+      onChange={handleChange}
+      placeholder="Stok"
+      className="w-full border border-gray-300 p-3 rounded-lg"
+      required
+    />
+  </div>
 
-          <button type="submit" className="w-full bg-teal-600 text-white py-3 rounded hover:bg-teal-700">
-            Simpan Perubahan
-          </button>
-        </form>
+  <button
+    type="submit"
+    className="w-full bg-teal-600 text-white py-3 rounded-lg hover:bg-teal-700"
+  >
+    {loading ? 'Menyimpan...' : 'Simpan Perubahan'}
+  </button>
+</form>
+
       </div>
     </div>
   );

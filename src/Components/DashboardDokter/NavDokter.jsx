@@ -27,7 +27,7 @@ const Navdashboard = ({ setIsAuthenticated, setUser }) => {
         </button>
       </div>
       <aside id="default-sidebar" className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform sm:translate-x-0 ${open ? 'translate-x-0' : '-translate-x-full'} aria-label="Sidebar`}>
-        <div className="h-full px-3 py-4 overflow-y-auto bg-[#1DE9B6]">
+        <div className="h-full flex flex-col px-3 py-4 overflow-y-auto bg-[#1DE9B6]">
           <ul className="space-y-2 font-medium">
             <li>
               <Link to={'/dashboardDokter'} className="flex items-center p-2 text-gray-900 rounded-lg hover:text-white hover:bg-[#00B686] ">
@@ -47,13 +47,13 @@ const Navdashboard = ({ setIsAuthenticated, setUser }) => {
                 <span className="flex-1 ms-3 whitespace-nowrap">Pemeriksaan</span>
               </Link>
             </li>
-            <li>
-              <button onClick={Logout} className="flex items-center p-2 w-full text-gray-900 rounded-lg hover:text-white hover:bg-[#00B686]">
-                <RiLogoutBoxLine className="text-lg" />
-                <span className="ms-3 whitespace-nowrap">Logout</span>
-              </button>
-            </li>
           </ul>
+            <div className="mt-auto">
+                 <button onClick={Logout} className="flex items-center p-2 w-full text-white bg-black rounded-lg hover:bg-gray-700">
+                   <RiLogoutBoxLine className="text-lg" />
+                   <span className="ms-3">Logout</span>
+                 </button>
+               </div>
         </div>
       </aside>
     </div>

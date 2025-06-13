@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import {  Modal, ModalBody, ModalHeader } from 'flowbite-react';
 
-const Modalpasien = ({ data, onClose, onUpdate, modalpasien }) => {
+const Modalpasien = ({ data, onClose, onUpdate, modalpasien ,loading ,setModalpasien}) => {
   const [formData, setFormData] = useState({ ...data });
   useEffect(() => {
     setFormData({ ...data });
@@ -16,39 +17,135 @@ const Modalpasien = ({ data, onClose, onUpdate, modalpasien }) => {
   };
 
   return (
-    <div tabIndex="-1" aria-hidden="true" className={`fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center ${modalpasien ? 'flex' : 'hidden'}`}>
-      <div className="bg-white p-6 rounded-lg w-full max-w-2xl">
-        <div className="flex justify-between items-center border-b pb-3 mb-4">
-          <h3 className="text-xl font-semibold">Edit Data Pasien</h3>
-          <button onClick={onClose} className="text-gray-500 hover:text-black">
-            ✕
-          </button>
-        </div>
+  
+<Modal show={modalpasien} onClose={() => setModalpasien(false)}>
+      <ModalHeader className="bg-white">
+        <h2 className="text-xl font-bold text-black text-center">Tambah Pasien</h2>
+      </ModalHeader>
+      <ModalBody className="bg-white">
+  <form onSubmit={handleSubmit} className="space-y-3">
+  <div>
+    <label htmlFor="nama" className="block mb-1 font-medium">Nama:</label>
+    <input
+      type="text"
+      id="nama"
+      name="nama"
+      value={formData.nama}
+      onChange={handleChange}
+      placeholder="Nama"
+      required
+      className="w-full p-3 border border-gray-300 rounded"
+    />
+  </div>
 
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <input type="text" name="nama" value={formData.nama} onChange={handleChange} placeholder="Nama" required className="w-full p-3 border rounded" />
-          <input type="text" name="nik" value={formData.nik} onChange={handleChange} placeholder="NIK" maxLength="16" required className="w-full p-3 border rounded" />
-          <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" required className="w-full p-3 border rounded" />
+  <div>
+    <label htmlFor="nik" className="block mb-1 font-medium">NIK (16 digit):</label>
+    <input
+      type="text"
+      id="nik"
+      name="nik"
+      value={formData.nik}
+      onChange={handleChange}
+      placeholder="NIK"
+      maxLength="16"
+      required
+      className="w-full p-3 border border-gray-300 rounded"
+    />
+  </div>
 
-          <div className="space-x-4">
-            <label>Jenis Kelamin:</label>
-            <input type="radio" id="male" name="jenis_kelamin" value="laki-laki" checked={formData.jenis_kelamin === 'laki-laki'} onChange={handleChange} />
-            <label htmlFor="male">Laki-laki</label>
+  <div>
+    <label htmlFor="email" className="block mb-1 font-medium">Email:</label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      value={formData.email}
+      onChange={handleChange}
+      placeholder="Email"
+      required
+      className="w-full p-3 border border-gray-300 rounded"
+    />
+  </div>
 
-            <input type="radio" id="female" name="jenis_kelamin" value="perempuan" checked={formData.jenis_kelamin === 'perempuan'} onChange={handleChange} />
-            <label htmlFor="female">Perempuan</label>
-          </div>
+  <div>
+    <span className="block mb-1 font-medium">Jenis Kelamin:</span>
+    <div className="space-x-4">
+      <input
+        type="radio"
+        id="male"
+        name="jenis_kelamin"
+        value="laki-laki"
+        checked={formData.jenis_kelamin === 'laki-laki'}
+        onChange={handleChange}
+      />
+      <label htmlFor="male">Laki-laki</label>
 
-          <input type="text" name="alamat" value={formData.alamat} onChange={handleChange} placeholder="Alamat" required className="w-full p-3 border rounded" />
-          <input type="text" name="tempat_lahir" value={formData.tempat_lahir} onChange={handleChange} placeholder="Tempat Lahir" required className="w-full p-3 border rounded" />
-          <input type="date" name="tanggal_lahir" value={formData.tanggal_lahir} onChange={handleChange} required className="w-full p-3 border rounded" />
-
-          <button type="submit" className="w-full bg-teal-500 text-white py-3 rounded hover:bg-teal-600">
-            Simpan Perubahan
-          </button>
-        </form>
-      </div>
+      <input
+        type="radio"
+        id="female"
+        name="jenis_kelamin"
+        value="perempuan"
+        checked={formData.jenis_kelamin === 'perempuan'}
+        onChange={handleChange}
+      />
+      <label htmlFor="female">Perempuan</label>
     </div>
+  </div>
+
+  <div>
+    <label htmlFor="alamat" className="block mb-1 font-medium">Alamat:</label>
+    <input
+      type="text"
+      id="alamat"
+      name="alamat"
+      value={formData.alamat}
+      onChange={handleChange}
+      placeholder="Alamat"
+      required
+      className="w-full p-3 border border-gray-300 rounded"
+    />
+  </div>
+
+  <div>
+    <label htmlFor="tempat_lahir" className="block mb-1 font-medium">Tempat Lahir:</label>
+    <input
+      type="text"
+      id="tempat_lahir"
+      name="tempat_lahir"
+      value={formData.tempat_lahir}
+      onChange={handleChange}
+      placeholder="Tempat Lahir"
+      required
+      className="w-full p-3 border border-gray-300 rounded"
+    />
+  </div>
+
+  <div>
+    <label htmlFor="tanggal_lahir" className="block mb-1 font-medium">Tanggal Lahir:</label>
+    <input
+      type="date"
+      id="tanggal_lahir"
+      name="tanggal_lahir"
+      value={formData.tanggal_lahir}
+      onChange={handleChange}
+      required
+      className="w-full p-3 border border-gray-300 rounded"
+    />
+  </div>
+
+  <button
+    type="submit"
+    className="w-full bg-teal-500 text-white py-3 rounded hover:bg-teal-600"
+  >
+    {loading ? 'Menyimpan...' : 'Simpan Perubahan'}
+  </button>
+</form>
+
+      </ModalBody>
+      
+    </Modal>
+       
+     
   );
 };
 

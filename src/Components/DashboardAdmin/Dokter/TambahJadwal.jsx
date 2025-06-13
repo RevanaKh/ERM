@@ -5,6 +5,7 @@ import { FaPlus } from "react-icons/fa6";
 const TambahJadwal = ({ data }) => {
   const [modaltambah, setModalTambah] = useState(false);
   const [Datadokter, SetdataDokter] = useState([]);
+  const [loading , setLoading] = useState(false)
   const fetchdokter = async () => {
     try {
       const response = await api.get('/dokter/getdokter');
@@ -29,13 +30,16 @@ const TambahJadwal = ({ data }) => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true)
     try {
       const response = await api.post('/jadwal/create', fromData);
       setModalTambah(false);
+      setLoading(false)
       await data();
     } catch (err) {
       console.log(err.response?.data.message);
       setModalTambah(false);
+      setLoading(false)
     }
   };
   return (
@@ -91,7 +95,7 @@ const TambahJadwal = ({ data }) => {
             </select>
 
             <button type="submit" className="w-full bg-teal-500 text-white py-3 rounded hover:bg-teal-600">
-              Tambah Jadwal
+              {loading ? 'Menyimpan...':'Tambah Jadwal'}
             </button>
           </form>
         </div>

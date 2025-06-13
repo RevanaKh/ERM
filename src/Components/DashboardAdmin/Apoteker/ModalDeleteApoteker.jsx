@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'flowbite-react';
-const ModalDeleteApoteker = ({ onDelete, OpenDelete, setOpenDelete, datas }) => {
+const ModalDeleteApoteker = ({ onDelete, OpenDelete, setOpenDelete, datas ,loading}) => {
   const [formData, setFormData] = useState({ ...datas });
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const ModalDeleteApoteker = ({ onDelete, OpenDelete, setOpenDelete, datas }) => 
           Batal
         </Button>
         <Button color="failure" onClick={handleSubmit}>
-          Hapus
+          {loading ? 'Menghapus...' : 'hapus'}
         </Button>
       </ModalFooter>
     </Modal>
