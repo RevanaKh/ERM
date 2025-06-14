@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, ModalBody, ModalHeader } from 'flowbite-react';
 
-const ModalDeleteObat = ({ show, obat, onDelete, onClose, loading }) => {
-  const [selectedObat, setSelectedObat] = useState({});
+const ModalDeleteObat = ({ show, data, onDelete, onClose, loading }) => {
+  const [selectedPasien, setSelectedPasien] = useState({});
 
   useEffect(() => {
-    setSelectedObat(obat);
-  }, [obat]);
+    setSelectedPasien(data);
+  }, [data]);
 
   const handleDelete = () => {
     onDelete(obat.id);
@@ -15,11 +15,11 @@ const ModalDeleteObat = ({ show, obat, onDelete, onClose, loading }) => {
   return (
     <Modal show={show} onClose={() => onClose(false)}>
       <ModalHeader className="bg-white">
-        <h2 className="text-xl font-bold text-black text-center">Edit Data Obat</h2>
+        <h2 className="text-xl font-bold text-black text-center">Delete Pasien</h2>
       </ModalHeader>
       <ModalBody className="bg-white">
         <p>
-          Yakin ingin menghapus <strong>{selectedObat.nama_obat}</strong>?
+          Yakin ingin menghapus <strong>{setSelectedPasien.nama}</strong>?
         </p>
         <div className="flex gap-4 mt-6">
           <button onClick={handleDelete} className="w-full bg-red-600 text-white py-3 rounded hover:bg-red-700">
