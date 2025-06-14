@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'flowbite-react';
 import api from '../../../utils/api';
 
-const FormTambahObat = () => {
+const FormTambahObat = ({ fetchObat }) => {
   const [formModal, setFormModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     nama_obat: '',
     harga_jual: '',
@@ -16,11 +17,16 @@ const FormTambahObat = () => {
   };
   const handelSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const res = await api.post('/obat/createobat', formData);
+      fetchObat();
+      setLoading(false);
+      setFormModal(false);
       setFormData({ nama_obat: '', jenis_obat: '', harga_jual: '', stok: '', kadaluarsa: '' });
     } catch (err) {
-      console.error(err.response?.data.message);
+      setLoading(false);
+      console.error(err.res?.data.message);
     }
   };
   return (
@@ -49,7 +55,7 @@ const FormTambahObat = () => {
             </div>
             <button type="submit" className="w-full bg-[#1DE9B6] text-white py-3 rounded hover:bg-[#00B686]">
               {' '}
-              Tambah Obat
+              {loading ? 'Menyimpan...' : 'Tambah Obat'}
             </button>
           </form>
         </ModalBody>

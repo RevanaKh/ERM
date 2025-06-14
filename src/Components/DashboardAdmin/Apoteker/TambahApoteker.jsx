@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import api from '../../../utils/api';
 import { Modal, ModalBody, ModalHeader } from 'flowbite-react';
-import { FaPlus } from "react-icons/fa6";
+import { FaPlus } from 'react-icons/fa6';
 
 function TambahApoteker() {
   const [openModal, setOpenModal] = useState(false);
-  const [loading , setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     nama: '',
     email: '',
@@ -14,6 +14,9 @@ function TambahApoteker() {
     alamat: '',
     tempat_lahir: '',
     tanggal_lahir: '',
+    status_pernikahan: '',
+    golongan_darah: '',
+    pekerjaan: '',
   });
 
   const [status, setStatus] = useState(null);
@@ -25,12 +28,12 @@ function TambahApoteker() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus(null);
-setLoading(true)
+    setLoading(true);
     try {
       const response = await api.post('/apoteker', form);
       const data = response.data;
       setStatus({ type: 'success', message: data.message });
-      setLoading(false)
+      setLoading(false);
       setForm({
         nama: '',
         email: '',
@@ -39,9 +42,12 @@ setLoading(true)
         alamat: '',
         tempat_lahir: '',
         tanggal_lahir: '',
+        status_pernikahan: '',
+        golongan_darah: '',
+        pekerjaan: '',
       });
     } catch (err) {
-      setLoading(false)  
+      setLoading(false);
       const errorMsg = err.response?.data?.message || 'Terjadi kesalahan saat mengirim data.';
       setStatus({ type: 'error', message: errorMsg });
     }
@@ -50,12 +56,12 @@ setLoading(true)
   return (
     <>
       <button
-  onClick={() => setOpenModal(true)}
-  className="flex items-center gap-2 text-white bg-[#00B686] hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 transition duration-150"
->
-  <FaPlus className="text-[20px]" />
-  Tambah Apoteker
-</button>
+        onClick={() => setOpenModal(true)}
+        className="flex items-center gap-2 text-white bg-[#00B686] hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 transition duration-150"
+      >
+        <FaPlus className="text-[20px]" />
+        Tambah Apoteker
+      </button>
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
         <ModalHeader className="bg-white">
           <h2 className="text-xl font-bold mb-6 text-center text-teal-500">Tambah Apoteker Baru</h2>
@@ -74,17 +80,18 @@ setLoading(true)
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">NIK</label>
-<input
-  type="text"
-  name="nik"
-  value={form.nik}
-  onChange={handleChange}
-  placeholder="NIK"
-  maxLength="16"
-  required
-  pattern="\d{16}"
-  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-/>              </div>
+                <input
+                  type="text"
+                  name="nik"
+                  value={form.nik}
+                  onChange={handleChange}
+                  placeholder="NIK"
+                  maxLength="16"
+                  required
+                  pattern="\d{16}"
+                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />{' '}
+              </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Jenis Kelamin</label>
                 <select name="jenis_kelamin" value={form.jenis_kelamin} onChange={handleChange} required className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
@@ -94,6 +101,58 @@ setLoading(true)
                 </select>
               </div>
               <div>
+                <div>
+                  <label htmlFor="status_pernikahan" className="block text-sm font-medium mb-1">
+                    Status Pernikahan
+                  </label>
+                  <select
+                    id="status_pernikahan"
+                    name="status_pernikahan"
+                    value={form.status_pernikahan}
+                    onChange={handleChange}
+                    required
+                    className="rounded-lg w-full px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  >
+                    <option value="">Pilih Status Pernikahan</option>
+                    <option value="belum menikah">Belum Menikah</option>
+                    <option value="menikah">Menikah</option>
+                    <option value="cerai">Cerai</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label htmlFor="golongan_darah" className="block text-sm font-medium mb-1">
+                    Golongan Darah
+                  </label>
+                  <select
+                    id="golongan_darah"
+                    name="golongan_darah"
+                    value={form.golongan_darah}
+                    onChange={handleChange}
+                    required
+                    className="rounded-lg w-full px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  >
+                    <option value="">Pilih Golongan Darah</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="AB">AB</option>
+                    <option value="O">O</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label htmlFor="pekerjaan" className="block text-sm font-medium mb-1">
+                    Pekerjaan
+                  </label>
+                  <select id="pekerjaan" name="pekerjaan" value={form.pekerjaan} onChange={handleChange} required className="rounded-lg w-full px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    <option value="">Pilih Pekerjaan</option>
+                    <option value="mahasiswa">Mahasiswa</option>
+                    <option value="bekerja">Bekerja</option>
+                    <option value="belum bekerja">Belum Bekerja</option>
+                    <option value="pelajar">Pelajar</option>
+                  </select>
+                </div>
+
                 <label className="block text-sm font-medium mb-1">Alamat</label>
                 <input type="text" name="alamat" value={form.alamat} onChange={handleChange} required className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" />
               </div>
@@ -107,7 +166,7 @@ setLoading(true)
               </div>
 
               <button type="submit" className="w-full bg-teal-500 text-white py-3 rounded hover:bg-teal-600">
-                {loading ?'Menyimpan...':'Tambah Apoteker'}
+                {loading ? 'Menyimpan...' : 'Tambah Apoteker'}
               </button>
             </form>
           </div>

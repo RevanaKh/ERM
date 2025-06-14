@@ -13,11 +13,14 @@ const ModalDeleteObat = ({ show, obat, onDelete, onClose, loading }) => {
   };
 
   return (
-    <Modal show={show} onClose={() => onClose(false)}>
-      <ModalHeader className="bg-white">
-        <h2 className="text-xl font-bold text-black text-center">Edit Data Obat</h2>
-      </ModalHeader>
-      <ModalBody className="bg-white">
+    <div tabIndex="-1" aria-hidden="true" className={`fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center ${show ? 'flex' : 'hidden'}`}>
+      <div className="bg-white p-6 rounded-lg w-full max-w-md">
+        <div className="flex justify-between items-center border-b pb-3 mb-4">
+          <h3 className="text-xl font-semibold">Hapus Obat</h3>
+          <button onClick={onClose} className="text-gray-500 hover:text-black">
+            ✕
+          </button>
+        </div>
         <p>
           Yakin ingin menghapus <strong>{selectedObat.nama_obat}</strong>?
         </p>
@@ -29,8 +32,8 @@ const ModalDeleteObat = ({ show, obat, onDelete, onClose, loading }) => {
             Batal
           </button>
         </div>
-      </ModalBody>
-    </Modal>
+      </div>
+    </div>
   );
 };
 

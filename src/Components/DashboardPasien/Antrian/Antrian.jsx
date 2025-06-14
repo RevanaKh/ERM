@@ -17,6 +17,15 @@ const Antrian = () => {
       setLoading(false);
     }
   };
+  const deleteAntrian = async (id) => {
+    try {
+      await api.delete(`/pasien/antrian/${id}`);
+      setDataAntrian((prev) => prev.filter((antri) => antri.pendaftaran_id !== id));
+    } catch (error) {
+      console.error('Gagal menghapus antrian:', error);
+    }
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#f9f9f9] px-4">
       <div className="bg-white shadow-lg rounded-lg w-full max-w-xl p-6">
@@ -32,25 +41,36 @@ const Antrian = () => {
             </div>
           ) : dataAntrian.length > 0 ? (
             dataAntrian.map((antri) => (
-              <div key={antri.id || antri.no_antrian} className="bg-white p-4 rounded-md shadow-sm mb-4 border border-gray-200">
-                <p className="text-center text-[22px] font-bold text-gray-800 mb-3">Nomor Antrian Anda:</p>
-                <p className="text-center text-[36px] font-extrabold text-[#00B686] mb-4">{antri.no_antrian}</p>
-                <div className="space-y-2 text-gray-700">
-                  <p>
-                    <span className="font-semibold">👨‍⚕️ Dokter:</span> {antri.nama_dokter}
-                  </p>
-                  <p>
-                    <span className="font-semibold">🏥 Poli:</span> {antri.poli}
-                  </p>
-                  <p>
-                    <span className="font-semibold">📅 Tanggal:</span> {new Date(antri.tanggal_pemeriksaan).toLocaleDateString('id-ID')}
-                  </p>
+              <div key={antri.id || antri.no_antrian}>
+                <div className="bg-white p-4 rounded-md shadow-sm mb-4 border border-gray-200">
+                  <p className="text-center text-[22px] font-bold text-gray-800 mb-3">Nomor Antrian Anda:</p>
+                  <p className="text-center text-[36px] font-extrabold text-[#00B686] mb-4">{antri.no_antrian}</p>
+                  <div className="space-y-2 text-gray-700">
+                    <p>
+                      <span className="font-semibold">👨‍⚕️ Dokter:</span> {antri.nama_dokter}
+                    </p>
+                    <p>
+                      <span className="font-semibold">🏥 Poli:</span> {antri.poli}
+                    </p>
+                    <p>
+                      <span className="font-semibold">📅 Tanggal:</span> {new Date(antri.tanggal_pemeriksaan).toLocaleDateString('id-ID')}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    onClick={() => deleteAntrian(antri.pendaftaran_id)}
+                    class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 "
+                  >
+                    Batalkan Antrian
+                  </button>
                 </div>
               </div>
             ))
-          ) : (
+          ) : dataAntrian.length === 0 ? (
             <p className="text-center text-gray-600 text-lg">Silakan mendaftar terlebih dahulu.</p>
-          )}
+          ) : null}
         </div>
       </div>
     </div>
