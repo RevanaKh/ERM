@@ -5,10 +5,11 @@ const ModalDeleteObat = ({ show, data, onDelete, onClose, loading }) => {
   const [selectedPasien, setSelectedPasien] = useState({ ...data });
 
   useEffect(() => {
-    setSelectedPasien(...data);
+    setSelectedPasien({ ...data });
   }, [data]);
 
-  const handleDelete = () => {
+  const handleDelete = (e) => {
+    e.preventDefault();
     onDelete(data.id);
   };
 
