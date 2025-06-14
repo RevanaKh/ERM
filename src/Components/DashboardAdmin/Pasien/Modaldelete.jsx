@@ -9,7 +9,7 @@ const ModalDeleteObat = ({ show, data, onDelete, onClose, loading }) => {
   }, [data]);
 
   const handleDelete = () => {
-    onDelete(obat.id);
+    onDelete(data.id);
   };
 
   return (
@@ -19,7 +19,7 @@ const ModalDeleteObat = ({ show, data, onDelete, onClose, loading }) => {
       </ModalHeader>
       <ModalBody className="bg-white">
         <p>
-          Yakin ingin menghapus <strong>{setSelectedPasien.nama}</strong>?
+          Yakin ingin menghapus <strong>{selectedPasien.nama}</strong>?
         </p>
         <div className="flex gap-4 mt-6">
           <button onClick={handleDelete} className="w-full bg-red-600 text-white py-3 rounded hover:bg-red-700">
