@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Modal, ModalBody, ModalHeader } from 'flowbite-react';
 
 const ModalDeleteObat = ({ show, data, onDelete, onClose, loading }) => {
-  const [selectedPasien, setSelectedPasien] = useState({});
+  const [selectedPasien, setSelectedPasien] = useState({ ...data });
 
   useEffect(() => {
-    setSelectedPasien(data);
+    setSelectedPasien(...data);
   }, [data]);
 
   const handleDelete = () => {
