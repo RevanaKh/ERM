@@ -38,12 +38,7 @@ const Navdashboard = ({ setIsAuthenticated, setUser }) => {
                 <span className="ms-3">Dashboard</span>
               </Link>
             </li>
-            <li>
-              <Link to={'/dashboardAdmin/laporan'} className="flex items-center p-2 text-gray-900 rounded-lg hover:text-white hover:bg-[#00B686]">
-                <TbReportAnalytics />
-                <span className="ms-3">Laporan</span>
-              </Link>
-            </li>
+
             <li>
               <Link to={'/dashboardAdmin/datapasien'} className="flex items-center p-2 text-gray-900 rounded-lg hover:text-white hover:bg-[#00B686]">
                 <FaUsers />
@@ -54,12 +49,6 @@ const Navdashboard = ({ setIsAuthenticated, setUser }) => {
               <Link to={'/dashboardAdmin/pendaftaran'} className="flex items-center p-2 text-gray-900 rounded-lg hover:text-white hover:bg-[#00B686]">
                 <FaClipboardList />
                 <span className="ms-3">Data Pendaftaran</span>
-              </Link>
-            </li>
-            <li>
-              <Link to={'/dashboardAdmin/transaksi'} className="flex items-center p-2 text-gray-900 rounded-lg hover:text-white hover:bg-[#00B686]">
-                <MdOutlinePayments />
-                <span className="ms-3">Transaksi Pasien</span>
               </Link>
             </li>
             <li>
@@ -75,9 +64,21 @@ const Navdashboard = ({ setIsAuthenticated, setUser }) => {
               </Link>
             </li>
             <li>
+              <Link to={'/dashboardAdmin/transaksi'} className="flex items-center p-2 text-gray-900 rounded-lg hover:text-white hover:bg-[#00B686]">
+                <MdOutlinePayments />
+                <span className="ms-3">Transaksi Pasien</span>
+              </Link>
+            </li>
+            <li>
               <Link to={'/dashboardAdmin/dataobat'} className="flex items-center p-2 text-gray-900 rounded-lg hover:text-white hover:bg-[#00B686]">
                 <BsCapsule />
                 <span className="ms-3">Data Obat</span>
+              </Link>
+            </li>
+            <li>
+              <Link to={'/dashboardAdmin/datauser'} className="flex items-center p-2 text-gray-900 rounded-lg hover:text-white hover:bg-[#00B686]">
+                <FaUsers />
+                <span className="ms-3">Data User</span>
               </Link>
             </li>
             <li>
@@ -87,9 +88,9 @@ const Navdashboard = ({ setIsAuthenticated, setUser }) => {
               </Link>
             </li>
             <li>
-              <Link to={'/dashboardAdmin/datauser'} className="flex items-center p-2 text-gray-900 rounded-lg hover:text-white hover:bg-[#00B686]">
-                <FaUsers />
-                <span className="ms-3">Data User</span>
+              <Link to={'/dashboardAdmin/laporan'} className="flex items-center p-2 text-gray-900 rounded-lg hover:text-white hover:bg-[#00B686]">
+                <TbReportAnalytics />
+                <span className="ms-3">Laporan</span>
               </Link>
             </li>
           </ul>
