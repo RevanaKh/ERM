@@ -6,7 +6,7 @@ import { RiLogoutBoxLine } from 'react-icons/ri';
 import { FaUserDoctor } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
 import { LuTicket } from 'react-icons/lu';
-
+import { TiMessages } from 'react-icons/ti';
 const Navdashboard = ({ setIsAuthenticated, setUser }) => {
   const [open, setOpen] = useState(false);
   const Toggler = () => {
@@ -73,13 +73,19 @@ const Navdashboard = ({ setIsAuthenticated, setUser }) => {
                 <span className="flex-1 ms-3 whitespace-nowrap">Transaksi</span>
               </Link>
             </li>
+            <li>
+              <Link to={`/dashboardPasien/report`} className="flex items-center p-2 text-gray-900 rounded-lg  hover:text-white hover:bg-[#00B686] ">
+                <TiMessages />
+                <span className="flex-1 ms-3 whitespace-nowrap">Kirimi Pesan Admin</span>
+              </Link>
+            </li>
           </ul>
-           <div className="mt-auto">
-                <button onClick={Logout} className="flex items-center p-2 w-full text-white bg-black rounded-lg hover:bg-gray-700">
-                  <RiLogoutBoxLine className="text-lg" />
-                  <span className="ms-3">Logout</span>
-                </button>
-              </div>
+          <div className="mt-auto">
+            <button onClick={Logout} className="flex items-center p-2 w-full text-white bg-black rounded-lg hover:bg-gray-700">
+              <RiLogoutBoxLine className="text-lg" />
+              <span className="ms-3">Logout</span>
+            </button>
+          </div>
         </div>
       </aside>
     </div>

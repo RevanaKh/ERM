@@ -10,6 +10,7 @@ import DataApoteker from './Apoteker/DataApoteker';
 import TransaksiPasien from './Pasien/TransaksiPasien';
 import Datauser from './Users/Datauser';
 import Laporan from './Laporan/Laporan';
+import Reportuser from './Reportuser/Reportuser';
 const Admin = ({ setIsAuthenticated, setUser }) => {
   return (
     <div className="min-h-screen w-full bg-[#FAF7F2] ">
@@ -26,6 +27,7 @@ const Admin = ({ setIsAuthenticated, setUser }) => {
             <Route path="transaksi" element={<TransaksiPasien />} />
             <Route path="datauser" element={<Datauser />} />
             <Route path="laporan" element={<Laporan />} />
+            <Route path="report" element={<Reportuser />} />
           </Routes>
         </div>
       </div>
