@@ -19,6 +19,7 @@ const FormTambahObat = () => {
     try {
       const res = await api.post('/obat/createobat', formData);
       setFormData({ nama_obat: '', jenis_obat: '', harga_jual: '', stok: '', kadaluarsa: '' });
+      setFormModal(false)
     } catch (err) {
       console.error(err.response?.data.message);
     }

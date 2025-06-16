@@ -3,12 +3,15 @@ import React, { useEffect, useState } from 'react';
 import api from '../../../utils/api';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import FormTambahObat from './FormTambahObat';
+import ModalDeleteObat from './ModalDeleteobat';
+import ModalEditObat from './ModalEditObat';
 
 const DataObat = () => {
   const [dataObat, setDataObat] = useState([]);
   const [selectedObat, setSelectedObat] = useState({});
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [loading , setLoading] = useState(false)
   const fetchObat = async () => {
     try {
       const res = await api.get('/obat/dataobat');
@@ -22,21 +25,31 @@ const DataObat = () => {
   }, []);
 
   const handleUpdate = async (id, updatedObat) => {
+    setLoading(true)
     try {
       await api.put(`/obat/${id}`, updatedObat);
+    setLoading(false)
+
       await fetchObat();
       setShowEditModal(false);
     } catch (err) {
       console.error(err);
+      setLoading(false)
     }
   };
 
   const handleDelete = async (id) => {
+    setLoading(true)
+
     try {
       await api.delete(`/obat/${id}`);
+    setLoading(false)
+
       await fetchObat();
       setShowDeleteModal(false);
     } catch (err) {
+    setLoading(false)
+
       console.error(err);
     }
   };
@@ -90,7 +103,14 @@ const DataObat = () => {
                     <td className="px-6 py-4">{obat.jenis_obat}</td>
                     <td className="px-6 py-4">Rp. {obat.harga_jual}</td>
                     <td className="px-6 py-4">{obat.stok}</td>
-                    <td className="px-6 py-4">{obat.kadaluarsa}</td>
+                    <td className="px-6 py-4"> {obat.kadaluarsa
+                ? new Date(obat.kadaluarsa).toLocaleString('id-ID', {
+                    day: '2-digit',
+                    month: 'long',
+                    year: 'numeric',
+                    hour12: false,
+                  })
+                : 'Tidak tersedia'}</td>
                     <td className="px-6 py-4 space-x-2">
                       <button
                         onClick={() => {
@@ -118,6 +138,8 @@ const DataObat = () => {
           </table>
         </div>
       </div>
+      <ModalEditObat show={showEditModal} onClose={setShowEditModal} obat={selectedObat} loading={loading} onUpdate={handleUpdate} />
+      <ModalDeleteObat loading={loading} show={showDeleteModal} onClose={setShowDeleteModal} onDelete={handleDelete} obat={selectedObat} />
     </>
   );
 };
