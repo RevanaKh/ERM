@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../../utils/api';
-import { FaUserCircle, FaEnvelope, FaPhoneAlt, FaIdCard, FaMale, FaFemale, FaMap, FaMapMarkerAlt, FaCalendarAlt } from 'react-icons/fa';
+import { FaUserCircle, FaEnvelope, FaPhoneAlt, FaIdCard, FaMale, FaFemale, FaMap, FaMapMarkerAlt, FaCalendarAlt, FaHeart, FaBriefcase, FaTint } from 'react-icons/fa';
 import ModalProfile from './ModalProfile';
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -57,7 +57,7 @@ const Profile = () => {
 
   return (
     <>
-      <div className="my-[20px]">
+      <div className="">
         {message ? (
           <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-300" role="alert">
             <span class="font-medium">{message}</span>
@@ -91,6 +91,20 @@ const Profile = () => {
           <div className="flex items-center gap-4">
             {user.jenis_kelamin === 'Laki-laki' ? <FaMale className="text-[#00B686]" /> : user.jenis_kelamin === 'Perempuan' ? <FaFemale className="text-[#00B686]" /> : null}
             <p className="text-gray-700">{user.jenis_kelamin || 'Tidak tersedia'}</p>
+          </div>
+          <div className="flex items-center gap-4">
+            <FaHeart className="text-[#00B686]" />
+            <p className="text-gray-700">{user.status_pernikahan || 'Tidak tersedia'}</p>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <FaBriefcase className="text-[#00B686]" />
+            <p className="text-gray-700">{user.pekerjaan || 'Tidak tersedia'}</p>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <FaTint className="text-[#00B686]" />
+            <p className="text-gray-700">{user.golongan_darah || 'Tidak tersedia'}</p>
           </div>
           <div className="flex items-center gap-4">
             <FaMap className="text-[#00B686]" />

@@ -9,13 +9,14 @@ import JadwalDokter from './JadwalDokter/JadwalDokter';
 import Profile from './Profile/Profile';
 import RiwayatMedis from './Riwayat/RiwayatMedis';
 import TransaksiSaya from './transaksi/TransaksiSaya';
+import Report from './ReportAdmin/Report';
 const Pasien = ({ setIsAuthenticated, setUser }) => {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
 
   return (
-    <div className="min-h-screen w-full bg-[#FAF7F2] ">
+    <div className="min-h-screen w-full py-2 bg-[#FAF7F2] ">
       <Navpasien setIsAuthenticated={setIsAuthenticated} setUser={setUser} />
       <div className="ml-[20px] mr-[20px] md:ml-[270px] md:mr-[20px]">
         <Routes>
@@ -26,6 +27,7 @@ const Pasien = ({ setIsAuthenticated, setUser }) => {
           <Route path="profile" element={<Profile />} />
           <Route path="riwayatmedis" element={<RiwayatMedis />} />
           <Route path="transaksisaya" element={<TransaksiSaya />} />
+          <Route path="report" element={<Report />} />
         </Routes>
       </div>
       <Modal error={error} message={message} open={open} setOpen={setOpen} />
