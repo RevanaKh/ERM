@@ -67,6 +67,7 @@ const Datauser = () => {
   };
   const handleDeleteClick = (data) => {
     setSelectedUser(data);
+    console.log(selectedUser);
     setModaldelete(true);
   };
   const exportUserToExcel = () => {

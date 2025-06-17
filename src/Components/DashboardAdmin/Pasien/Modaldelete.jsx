@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, ModalBody, ModalHeader } from 'flowbite-react';
 
-const ModalDeleteObat = ({ show, data, onDelete, onClose, loading }) => {
+const ModalDeleteObat = ({ modaldelete, data, onDelete, setModaldelete, loading }) => {
   const [selectedPasien, setSelectedPasien] = useState({ ...data });
 
   useEffect(() => {
@@ -10,11 +10,11 @@ const ModalDeleteObat = ({ show, data, onDelete, onClose, loading }) => {
 
   const handleDelete = (e) => {
     e.preventDefault();
-    onDelete(data.id);
+    onDelete(data.user_id);
   };
 
   return (
-    <Modal show={show} onClose={() => onClose(false)}>
+    <Modal show={modaldelete} onClose={() => setModaldelete(false)}>
       <ModalHeader className="bg-white">
         <h2 className="text-xl font-bold text-black text-center">Delete Pasien</h2>
       </ModalHeader>
@@ -26,7 +26,7 @@ const ModalDeleteObat = ({ show, data, onDelete, onClose, loading }) => {
           <button onClick={handleDelete} className="w-full bg-red-600 text-white py-3 rounded hover:bg-red-700">
             {loading ? 'Menghapus...' : 'Hapus'}
           </button>
-          <button onClick={onClose} className="w-full bg-gray-300 text-black py-3 rounded hover:bg-gray-400">
+          <button onClick={() => setModaldelete(false)} className="w-full bg-gray-300 text-black py-3 rounded hover:bg-gray-400">
             Batal
           </button>
         </div>
