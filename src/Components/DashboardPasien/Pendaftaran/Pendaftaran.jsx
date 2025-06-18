@@ -15,6 +15,9 @@ const Pendaftaran = ({ setAntrian, setError, setMessage, setOpen }) => {
     poli: '',
     tanggalLahir: '',
     jenisKelamin: '',
+     status_pernikahan: '',
+    golongan_darah: '',
+    pekerjaan: '',
     keluhan: '',
     alamat: '',
     metodePembayaran: '',
@@ -56,7 +59,6 @@ const Pendaftaran = ({ setAntrian, setError, setMessage, setOpen }) => {
       <div className="max-w-xl mx-auto p-6 bg-white mb-10 shadow-md rounded-md mt-10">
         <h2 className="text-2xl font-semibold mb-6 text-center">Form Pendaftaran Pasien</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* NIK */}
           <div className="flex flex-col md:flex-row justify-between ">
            <div>
   <label className="block text-sm font-medium">NIK</label>
@@ -110,6 +112,57 @@ const Pendaftaran = ({ setAntrian, setError, setMessage, setOpen }) => {
               </div>
             </div>
           </div>
+          <div>
+                    <label htmlFor="status_pernikahan" className="block text-sm font-medium mb-1">
+                      Status Pernikahan
+                    </label>
+                    <select
+                      id="status_pernikahan"
+                      name="status_pernikahan"
+                      value={formData.status_pernikahan}
+                      onChange={handleChange}
+                      required
+                      className="rounded-lg w-full px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    >
+                      <option value="">Pilih Status Pernikahan</option>
+                      <option value="belum menikah">Belum Menikah</option>
+                      <option value="menikah">Menikah</option>
+                      <option value="cerai">Cerai</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label htmlFor="golongan_darah" className="block text-sm font-medium mb-1">
+                      Golongan Darah
+                    </label>
+                    <select
+                      id="golongan_darah"
+                      name="golongan_darah"
+                      value={formData.golongan_darah}
+                      onChange={handleChange}
+                      required
+                      className="rounded-lg w-full px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    >
+                      <option value="">Pilih Golongan Darah</option>
+                      <option value="A">A</option>
+                      <option value="B">B</option>
+                      <option value="AB">AB</option>
+                      <option value="O">O</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label htmlFor="pekerjaan" className="block text-sm font-medium mb-1">
+                      Pekerjaan
+                    </label>
+                    <select id="pekerjaan" name="pekerjaan" value={formData.pekerjaan} onChange={handleChange} required className="rounded-lg w-full px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                      <option value="">Pilih Pekerjaan</option>
+                      <option value="mahasiswa">Mahasiswa</option>
+                      <option value="bekerja">Bekerja</option>
+                      <option value="belum bekerja">Belum Bekerja</option>
+                      <option value="pelajar">Pelajar</option>
+                    </select>
+                  </div>
           <div>
             <label className="block text-sm font-medium">Keluhan</label>
             <input type="text" name="keluhan" value={formData.keluhan} onChange={handleChange} className="mt-1 block w-full border rounded-md p-2 border-gray-300 focus:ring focus:ring-blue-200" required />

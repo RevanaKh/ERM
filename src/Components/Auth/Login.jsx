@@ -3,6 +3,7 @@ import api from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
 import ModalLogin from './ModalLogin';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import LupaPassword from './LupaPassword';
 
 const Login = ({ setIsAuthenticated, setUser }) => {
   const [daftar, setDaftar] = useState(false);
@@ -12,10 +13,13 @@ const Login = ({ setIsAuthenticated, setUser }) => {
   const navigate = useNavigate();
   const [Openmodal, setOpenmodal] = useState(false);
   const [lihatPassword, setLihatpassword] = useState(false);
-
+const [lupaPassword , setlupaPassword] = useState(false)
   const handleLihatPassword = () => {
     setLihatpassword(!lihatPassword);
   };
+  const handlelupaPassword = () => {
+    setlupaPassword(!lupaPassword)
+  }
   const [fromData, setFromdata] = useState({
     nama: '',
     nik: '',
@@ -111,6 +115,11 @@ const Login = ({ setIsAuthenticated, setUser }) => {
               <h1 className="text-xl text-center font-semibold mb-5 text-black">E - REKAM MEDIS</h1>
 
               <div className=" mb-4">
+                {lupaPassword ? (
+                  <LupaPassword setlupaPassword={setlupaPassword} />
+                ) : (
+                  <>
+                  
                 <h2 className="text-lg text-center font-bold mb-4">Login</h2>
                 <form onSubmit={handleLogin} id="formLogin" className="space-y-3">
                   <input type="email" name="email" value={email} onChange={handelchange} id="loginEmail" placeholder="Email" required className="w-full p-3 border border-gray-300 rounded-xl" />
@@ -120,16 +129,25 @@ const Login = ({ setIsAuthenticated, setUser }) => {
                     {loading ? 'Loading...' : 'Login'}
                   </button>
                   {error && <p className="text-red-400">{error}</p>}
+
                   <p className="text-sm text-center mt-4">
                     Belum Punya Akun?{' '}
-                    <a onClick={() => setDaftar(true)} id="showSignup" className="text-teal-600 font-bold hover:underline">
+                    <a onClick={() => setDaftar(true)} id="showSignup" className="text-teal-600 font-bold hover:underline cursor-pointer">
                       Daftar
                     </a>
                   </p>
                 </form>
+                  </>
+                )}
+  <p className="text-sm text-center mt-4">
+                    
+                    <a onClick={handlelupaPassword} id="showSignup" className="text-teal-600 font-bold hover:underline cursor-pointer">
+                      {lupaPassword ? 'Kembali' :'Lupa Password'}
+                    </a>
+                  </p>                  
               </div>
             </>
-          ) : (
+          ) :(
             <>
               <div className=" ">
                 <h2 className="text-lg text-center font-bold mb-4">Sign Up</h2>
@@ -257,7 +275,7 @@ const Login = ({ setIsAuthenticated, setUser }) => {
 
                   <p className="text-sm text-center mt-4">
                     Sudah Punya Akun?{' '}
-                    <a onClick={() => setDaftar(false)} id="showLogin" className="text-teal-600 font-bold hover:underline">
+                    <a onClick={() => setDaftar(false)} id="showLogin" className="text-teal-600 font-bold hover:underline cursor-pointer">
                       Login
                     </a>
                   </p>
@@ -265,6 +283,7 @@ const Login = ({ setIsAuthenticated, setUser }) => {
               </div>
             </>
           )}
+
         </div>
       </div>
       <div className={`${Openmodal && 'fixed  inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50'} `}>
