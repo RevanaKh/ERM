@@ -21,7 +21,7 @@ const ModalEditUser = ({ data, EditUser, setEditUser, onUpdate, loading }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setEditUser(false);
-    onUpdate(data.id, form);
+    onUpdate(data.user_id, form);
   };
   useEffect(() => {
     setForm({ ...data });

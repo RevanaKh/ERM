@@ -13,7 +13,7 @@ const Modalpasien = ({ data, onClose, onUpdate, modalpasien, loading, setModalpa
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onUpdate(data.id, formData);
+    onUpdate(data.user_id, formData);
   };
 
   return (
