@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { FaFileExcel, FaFilePdf } from "react-icons/fa6";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
-import * as XLSX from "xlsx";
-import { saveAs } from "file-saver";
+import React, { useEffect, useState } from 'react';
+import { FaFileExcel, FaFilePdf } from 'react-icons/fa6';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
-import LaporanPasien from "./LaporanPasien";
-import LaporanDokter from "./LaporanDokter";
-import LaporanTransaksi from "./LaporanTransaksi";
-import LaporanStokObat from "./LaporanStockObat";
-import LaporanPengguna from "./LaporanPengguna";
-import api from "../../../utils/api";
+import LaporanPasien from './LaporanPasien';
+import LaporanDokter from './LaporanDokter';
+import LaporanTransaksi from './LaporanTransaksi';
+import LaporanStokObat from './LaporanStockObat';
+import LaporanPengguna from './LaporanPengguna';
+import api from '../../../utils/api';
 
 const Laporan = () => {
   const [laporanData, setLaporanData] = useState({
@@ -24,23 +24,17 @@ const Laporan = () => {
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const [usersRes, transaksiRes, obatRes ,dokterRes] = await Promise.all([
-          api.get('/users'),
-          api.get('/pasien/getpembayaran'),
-          api.get('/obat/dataobat'),
-          api.get('/dokter/getdokter')
-        ]);
-console.log(transaksiRes.data)
-console.log(obatRes.data)
+        const [usersRes, transaksiRes, obatRes, dokterRes] = await Promise.all([api.get('/users'), api.get('/pasien/getpembayaran'), api.get('/obat/dataobat'), api.get('/dokter/getdokter')]);
+
         setLaporanData({
-          pasien: usersRes.data.filter(user => user.role === 'pasien'),
+          pasien: usersRes.data.filter((user) => user.role === 'pasien'),
           dokter: dokterRes.data,
           transaksi: transaksiRes.data,
           obat: obatRes.data,
           pengguna: usersRes.data,
         });
       } catch (err) {
-        console.error("Gagal memuat laporan:", err.message);
+        console.error('Gagal memuat laporan:', err.message);
       }
     };
 
@@ -50,7 +44,7 @@ console.log(obatRes.data)
   const exportPDF = () => {
     const doc = new jsPDF();
     doc.setFontSize(16);
-    doc.text("Laporan Sistem Rekam Medis", 14, 15);
+    doc.text('Laporan Sistem Rekam Medis', 14, 15);
 
     let y = 25;
 
@@ -72,104 +66,91 @@ console.log(obatRes.data)
     };
 
     addSection(
-      "Data Pasien",
-      ["ID", "Nama", "NIK", "Gender", "Tempat Lahir", "Tgl Lahir", "Alamat", "Email"],
-      laporanData.pasien.map(p => [
-        `RM-${p.id}`, p.nama, p.nik, p.jenis_kelamin, p.tempat_lahir, p.tanggal_lahir, p.alamat, p.email
-      ])
+      'Data Pasien',
+      ['ID', 'Nama', 'NIK', 'Gender', 'Tempat Lahir', 'Tgl Lahir', 'Alamat', 'Email'],
+      laporanData.pasien.map((p) => [`RM-${p.id}`, p.nama, p.nik, p.jenis_kelamin, p.tempat_lahir, p.tanggal_lahir, p.alamat, p.email])
     );
 
     addSection(
-      "Data Dokter",
-      ["ID", "Nama", "Email", "Poli", "Role"],
-      laporanData.dokter.map(d => [`DK-${d.id}`, d.nama, d.email, d.poli || '-', d.role])
+      'Data Dokter',
+      ['ID', 'Nama', 'Email', 'Poli', 'Role'],
+      laporanData.dokter.map((d) => [`DK-${d.id}`, d.nama, d.email, d.poli || '-', d.role])
     );
 
     addSection(
-      "Transaksi",
-      ["ID", "Tanggal", "Pasien", "Layanan", "Harga", "Status"],
-      laporanData.transaksi.map(t => [
-          t.id, t.waktu_daftar, t.nama_pasien, t.metodePembayaran, t.harga_jual, t.status_pembayaran
-      ])
+      'Transaksi',
+      ['ID', 'Tanggal', 'Pasien', 'Layanan', 'Harga', 'Status'],
+      laporanData.transaksi.map((t) => [t.id, t.waktu_daftar, t.nama_pasien, t.metodePembayaran, t.harga_jual, t.status_pembayaran])
     );
 
     addSection(
-      "Stok Obat",
-      ["ID", "Nama", "Jenis", "Harga", "Stok", "Kadaluarsa"],
-      laporanData.obat.map(o => [
-          `OBT-${o.id}`, o.nama_obat, o.jenis_obat, `Rp .${o.harga_jual}`, o.stok, o.kadaluarsa
-      ])
+      'Stok Obat',
+      ['ID', 'Nama', 'Jenis', 'Harga', 'Stok', 'Kadaluarsa'],
+      laporanData.obat.map((o) => [`OBT-${o.id}`, o.nama_obat, o.jenis_obat, `Rp .${o.harga_jual}`, o.stok, o.kadaluarsa])
     );
 
     addSection(
-      "Pengguna",
-      ["ID", "Nama", "Email", "Role"],
-      laporanData.pengguna.map(u => [`USR-${u.id}`, u.nama, u.email, u.role])
+      'Pengguna',
+      ['ID', 'Nama', 'Email', 'Role'],
+      laporanData.pengguna.map((u) => [`USR-${u.id}`, u.nama, u.email, u.role])
     );
 
-    doc.save("laporan_rekam_medis.pdf");
+    doc.save('laporan_rekam_medis.pdf');
   };
 
   const exportExcel = () => {
     const wb = XLSX.utils.book_new();
 
-    const makeSheet = (data, headers) =>
-      XLSX.utils.aoa_to_sheet([headers, ...data]);
+    const makeSheet = (data, headers) => XLSX.utils.aoa_to_sheet([headers, ...data]);
 
     XLSX.utils.book_append_sheet(
       wb,
       makeSheet(
-        laporanData.pasien.map(p => [
-          `RM-${p.id}`, p.nama, p.nik, p.jenis_kelamin, p.tempat_lahir, p.tanggal_lahir, p.alamat, p.email
-        ]),
-        ["ID", "Nama", "NIK", "Gender", "Tempat Lahir", "Tgl Lahir", "Alamat", "Email"]
+        laporanData.pasien.map((p) => [`RM-${p.id}`, p.nama, p.nik, p.jenis_kelamin, p.tempat_lahir, p.tanggal_lahir, p.alamat, p.email]),
+        ['ID', 'Nama', 'NIK', 'Gender', 'Tempat Lahir', 'Tgl Lahir', 'Alamat', 'Email']
       ),
-      "Data Pasien"
+      'Data Pasien'
     );
 
     XLSX.utils.book_append_sheet(
       wb,
       makeSheet(
-        laporanData.dokter.map(d => [`DK-${d.id}`, d.nama, d.email, d.poli || '-', d.role]),
-        ["ID", "Nama", "Email", "Poli", "Role"]
+        laporanData.dokter.map((d) => [`DK-${d.id}`, d.nama, d.email, d.poli || '-', d.role]),
+        ['ID', 'Nama', 'Email', 'Poli', 'Role']
       ),
-      "Data Dokter"
+      'Data Dokter'
     );
 
     XLSX.utils.book_append_sheet(
       wb,
       makeSheet(
-        laporanData.transaksi.map(t => [
-          t.id, t.waktu_daftar, t.nama_pasien, t.metodePembayaran, t.harga_jual, t.status_pembayaran
-        ]),
-        ["ID", "Tanggal", "Pasien", "Layanan", "Harga", "Status"]
+        laporanData.transaksi.map((t) => [t.id, t.waktu_daftar, t.nama_pasien, t.metodePembayaran, t.harga_jual, t.status_pembayaran]),
+        ['ID', 'Tanggal', 'Pasien', 'Layanan', 'Harga', 'Status']
       ),
-      "Transaksi"
+      'Transaksi'
     );
 
     XLSX.utils.book_append_sheet(
       wb,
       makeSheet(
-        laporanData.obat.map(o => [
-          `OBT-${o.id}`, o.nama_obat, o.jenis_obat, o.harga, o.stok, o.kadaluarsa
-        ]),
-        ["ID", "Nama", "Jenis", "Harga", "Stok", "Kadaluarsa"]
+        laporanData.obat.map((o) => [`OBT-${o.id}`, o.nama_obat, o.jenis_obat, o.harga, o.stok, o.kadaluarsa]),
+        ['ID', 'Nama', 'Jenis', 'Harga', 'Stok', 'Kadaluarsa']
       ),
-      "Stok Obat"
+      'Stok Obat'
     );
 
     XLSX.utils.book_append_sheet(
       wb,
       makeSheet(
-        laporanData.pengguna.map(u => [`USR-${u.id}`, u.nama, u.email, u.role]),
-        ["ID", "Nama", "Email", "Role"]
+        laporanData.pengguna.map((u) => [`USR-${u.id}`, u.nama, u.email, u.role]),
+        ['ID', 'Nama', 'Email', 'Role']
       ),
-      "Pengguna"
+      'Pengguna'
     );
 
-    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-    const fileData = new Blob([excelBuffer], { type: "application/octet-stream" });
-    saveAs(fileData, "laporan_rekam_medis.xlsx");
+    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const fileData = new Blob([excelBuffer], { type: 'application/octet-stream' });
+    saveAs(fileData, 'laporan_rekam_medis.xlsx');
   };
 
   return (

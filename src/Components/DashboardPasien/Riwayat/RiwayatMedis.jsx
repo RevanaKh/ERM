@@ -9,7 +9,6 @@ const RiwayatMedis = () => {
     try {
       const res = await api.get('/pasien/getpemeriksaan');
       setRiwayat(res.data.data);
-      console.log(res.data.data);
     } catch (err) {
       console.error('Gagal mengambil data riwayat medis:', err.message);
     } finally {

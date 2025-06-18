@@ -3,7 +3,9 @@ import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'flowbite-rea
 
 const ModalDetail = ({ data, show, setModalDetail }) => {
   const [formData, setFromData] = useState({ ...data });
-
+  useEffect(() => {
+    setFromData({ ...data });
+  }, [data]);
   return (
     <Modal show={show} onClose={() => setModalDetail(false)} size="xl">
       <ModalHeader className="bg-white">

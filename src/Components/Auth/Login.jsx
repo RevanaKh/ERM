@@ -60,7 +60,6 @@ const Login = ({ setIsAuthenticated, setUser }) => {
       localStorage.setItem('token', response.data.token);
       setIsAuthenticated(true);
       setUser(response.data.user);
-      console.log(response.data.user);
       setLoading(false);
       const userRole = response.data.user.role;
       setError('');
