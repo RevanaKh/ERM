@@ -13,13 +13,13 @@ const Login = ({ setIsAuthenticated, setUser }) => {
   const navigate = useNavigate();
   const [Openmodal, setOpenmodal] = useState(false);
   const [lihatPassword, setLihatpassword] = useState(false);
-const [lupaPassword , setlupaPassword] = useState(false)
+  const [lupaPassword, setlupaPassword] = useState(false);
   const handleLihatPassword = () => {
     setLihatpassword(!lihatPassword);
   };
   const handlelupaPassword = () => {
-    setlupaPassword(!lupaPassword)
-  }
+    setlupaPassword(!lupaPassword);
+  };
   const [fromData, setFromdata] = useState({
     nama: '',
     nik: '',
@@ -119,35 +119,48 @@ const [lupaPassword , setlupaPassword] = useState(false)
                   <LupaPassword setlupaPassword={setlupaPassword} />
                 ) : (
                   <>
-                  
-                <h2 className="text-lg text-center font-bold mb-4">Login</h2>
-                <form onSubmit={handleLogin} id="formLogin" className="space-y-3">
-                  <input type="email" name="email" value={email} onChange={handelchange} id="loginEmail" placeholder="Email" required className="w-full p-3 border border-gray-300 rounded-xl" />
-                  <input type="password" id="loginPassword" name="password" value={password} onChange={handelchange} placeholder="Password" required className="w-full p-3 border border-gray-300 rounded-xl" />
+                    <h2 className="text-lg text-center font-bold mb-4">Login</h2>
+                    <form onSubmit={handleLogin} id="formLogin" className="space-y-3">
+                      <input type="email" name="email" value={email} onChange={handelchange} id="loginEmail" placeholder="Email" required className="w-full p-3 border border-gray-300 rounded-xl" />
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type={lihatPassword ? 'text' : 'password'}
+                            name="password"
+                            value={password}
+                            onChange={handelchange}
+                            id="password"
+                            placeholder="Password"
+                            required
+                            className="w-full p-3 border border-gray-300 rounded-xl pr-10"
+                          />
+                          <button type="button" onClick={handleLihatPassword} className="text-gray-600 hover:text-gray-800">
+                            {lihatPassword ? <FaEyeSlash /> : <FaEye />}
+                          </button>
+                        </div>
+                      </div>
+                      <button type="submit" className="w-full bg-teal-400 hover:bg-teal-600 text-white font-bold py-3 rounded-xl transition duration-300">
+                        {loading ? 'Loading...' : 'Login'}
+                      </button>
+                      {error && <p className="text-red-400">{error}</p>}
 
-                  <button type="submit" className="w-full bg-teal-400 hover:bg-teal-600 text-white font-bold py-3 rounded-xl transition duration-300">
-                    {loading ? 'Loading...' : 'Login'}
-                  </button>
-                  {error && <p className="text-red-400">{error}</p>}
-
-                  <p className="text-sm text-center mt-4">
-                    Belum Punya Akun?{' '}
-                    <a onClick={() => setDaftar(true)} id="showSignup" className="text-teal-600 font-bold hover:underline cursor-pointer">
-                      Daftar
-                    </a>
-                  </p>
-                </form>
+                      <p className="text-sm text-center mt-4">
+                        Belum Punya Akun?{' '}
+                        <a onClick={() => setDaftar(true)} id="showSignup" className="text-teal-600 font-bold hover:underline cursor-pointer">
+                          Daftar
+                        </a>
+                      </p>
+                    </form>
                   </>
                 )}
-  <p className="text-sm text-center mt-4">
-                    
-                    <a onClick={handlelupaPassword} id="showSignup" className="text-teal-600 font-bold hover:underline cursor-pointer">
-                      {lupaPassword ? 'Kembali' :'Lupa Password'}
-                    </a>
-                  </p>                  
+                <p className="text-sm text-center mt-4">
+                  <a onClick={handlelupaPassword} id="showSignup" className="text-teal-600 font-bold hover:underline cursor-pointer">
+                    {lupaPassword ? 'Kembali' : 'Lupa Password'}
+                  </a>
+                </p>
               </div>
             </>
-          ) :(
+          ) : (
             <>
               <div className=" ">
                 <h2 className="text-lg text-center font-bold mb-4">Sign Up</h2>
@@ -283,7 +296,6 @@ const [lupaPassword , setlupaPassword] = useState(false)
               </div>
             </>
           )}
-
         </div>
       </div>
       <div className={`${Openmodal && 'fixed  inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50'} `}>

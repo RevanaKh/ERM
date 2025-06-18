@@ -1,10 +1,11 @@
 import react, { useState, useEffect } from 'react';
 import api from '../../../utils/api';
-import { FaEdit, FaTrash, FaUsers } from 'react-icons/fa';
+import { FaEdit, FaEye, FaTrash, FaUsers } from 'react-icons/fa';
 import { FaFileExcel, FaFilePdf } from 'react-icons/fa6';
 import Createuser from './Createuser';
 import ModalEditUser from './ModalEditUser';
 import ModalDeleteUser from './ModalDeleteUser';
+import ModalDetailUser from './ModalDetailUser';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import * as XLSX from 'xlsx';
@@ -15,6 +16,7 @@ const Datauser = () => {
   const [EditUser, setEditUser] = useState(false);
   const [modaldelete, setModaldelete] = useState(false);
   const [message, setMessage] = useState('');
+  const [modalDetail, setModalDetail] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState('');
@@ -67,8 +69,11 @@ const Datauser = () => {
   };
   const handleDeleteClick = (data) => {
     setSelectedUser(data);
-    console.log(selectedUser);
     setModaldelete(true);
+  };
+  const handleDetailClick = (data) => {
+    setSelectedUser(data);
+    setModalDetail(true);
   };
   const exportUserToExcel = () => {
     const filteredUsers = users.filter((user) => user.nama.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -172,33 +177,11 @@ const Datauser = () => {
                   <th scope="col" class="px-6 py-3">
                     Nama user
                   </th>
-                  <th scope="col" class="px-6 py-3">
-                    nik
-                  </th>
+
                   <th scope="col" class="px-6 py-3">
                     Email
                   </th>
-                  <th scope="col" class="px-6 py-3">
-                    Jenis Kelamin
-                  </th>
-                  <th scope="col" class="px-6 py-3">
-                    Alamat
-                  </th>
-                  <th scope="col" class="px-6 py-3">
-                    Tempat Lahir
-                  </th>
-                  <th scope="col" class="px-6 py-3">
-                    Tanggal Lahir
-                  </th>
-                  <th scope="col" class="px-6 py-3">
-                    Pernikahan
-                  </th>
-                  <th scope="col" class="px-6 py-3">
-                    Golongan darah
-                  </th>
-                  <th scope="col" class="px-6 py-3">
-                    Perkejaan
-                  </th>
+
                   <th scope="col" class="px-6 py-3">
                     role
                   </th>
@@ -226,26 +209,7 @@ const Datauser = () => {
                     .map((user) => (
                       <tr key={user.id} class=" border-b bg-white hover:bg-gray-50 text-black border-gray-200">
                         <td class="px-6 py-4">{user.nama}</td>
-                        <td class="px-6 py-4">{user.nik}</td>
                         <td class="px-6 py-4">{user.email}</td>
-                        <td class="px-6 py-4">{user.jenis_kelamin}</td>
-                        <td class="px-6 py-4">{user.alamat}</td>
-                        <td class="px-6 py-4">{user.tempat_lahir}</td>
-                        <td class="px-6 py-4">
-                          {' '}
-                          {user.tanggal_lahir
-                            ? new Date(user.tanggal_lahir).toLocaleString('id-ID', {
-                                day: '2-digit',
-                                month: 'long',
-                                year: 'numeric',
-                                hour12: false,
-                              })
-                            : 'Tidak tersedia'}
-                        </td>
-                        <td class="px-6 py-4">{user.status_pernikahan}</td>
-
-                        <td class="px-6 py-4">{user.golongan_darah}</td>
-                        <td class="px-6 py-4">{user.pekerjaan}</td>
 
                         <td class="px-6 py-4">{user.role}</td>
                         <td className="px-6 py-4 flex justify-center">
@@ -254,6 +218,9 @@ const Datauser = () => {
                           </button>
                           <button type="button" onClick={() => handleDeleteClick(user)} className="focus:outline-none text-red-400  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
                             <FaTrash />
+                          </button>
+                          <button type="button" onClick={() => handleDetailClick(user)} className="focus:outline-none text-blue-400  hover:text-blue-600 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
+                            <FaEye />
                           </button>
                         </td>
                       </tr>
@@ -266,6 +233,7 @@ const Datauser = () => {
       </div>
       <ModalEditUser data={selectedUser} loading={loading} setEditUser={setEditUser} EditUser={EditUser} onUpdate={handleUpdate} />
       <ModalDeleteUser data={selectedUser} loading={loading} setModaldelete={setModaldelete} modaldelete={modaldelete} onDelete={handleDelete} />
+      <ModalDetailUser data={selectedUser} show={modalDetail} setModalDetail={setModalDetail} />
     </>
   );
 };

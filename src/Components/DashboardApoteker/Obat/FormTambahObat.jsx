@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'flowbite-react';
+import { Button, Modal, ModalBody, ModalHeader } from 'flowbite-react';
 import api from '../../../utils/api';
 
 const FormTambahObat = ({ fetchObat }) => {
@@ -24,7 +24,7 @@ const FormTambahObat = ({ fetchObat }) => {
       setLoading(false);
       setFormModal(false);
       setFormData({ nama_obat: '', jenis_obat: '', harga_jual: '', stok: '', kadaluarsa: '' });
-      setFormModal(false)
+      setFormModal(false);
     } catch (err) {
       setLoading(false);
       console.error(err.res?.data.message);

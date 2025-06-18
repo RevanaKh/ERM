@@ -1,7 +1,8 @@
 import react, { useEffect, useState } from 'react';
 import api from '../../../utils/api';
 import Modalpasien from './Modalpasien';
-import { FaEdit, FaTrash, FaUsers } from 'react-icons/fa';
+import { FaEdit, FaEye, FaTrash, FaUsers } from 'react-icons/fa';
+import ModalDetailPasien from './ModalDetailPasien';
 import Modaldelete from './Modaldelete';
 import { FaFileExcel, FaFilePdf } from 'react-icons/fa6';
 import jsPDF from 'jspdf';
@@ -14,6 +15,7 @@ const Datapasien = () => {
   const [modalpasien, setModalpasien] = useState(false);
   const [modaldelete, setModaldelete] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [modalDetail, setModalDetail] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [datapasien, setDatapasien] = useState([]);
@@ -84,6 +86,10 @@ const Datapasien = () => {
   const handleDeleteClick = (data) => {
     setSelectedPasien(data);
     setModaldelete(true);
+  };
+  const handleDetailClick = (data) => {
+    setSelectedPasien(data);
+    setModalDetail(true);
   };
   const handleDelete = async (id) => {
     setLoading(true);
@@ -219,21 +225,7 @@ const Datapasien = () => {
                   <th scope="col" className="px-6 py-3">
                     NAMA PASIEN
                   </th>
-                  <th scope="col" className="px-6 py-3">
-                    NIK
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    GENDER
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    TEMPAT LAHIR
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    TANGGAL LAHIR
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    ALAMAT
-                  </th>
+
                   <th scope="col" className="px-6 py-3">
                     EMAIL
                   </th>
@@ -250,21 +242,6 @@ const Datapasien = () => {
                       <tr key={data.id} className="bg-white border-b hover:bg-gray-50">
                         <td className="px-6 py-4 font-medium text-gray-900">{`RM-${data.id}`}</td>
                         <td className="px-6 py-4">{data.nama}</td>
-                        <td className="px-6 py-4">{data.nik}</td>
-                        <td className="px-6 py-4">{data.jenis_kelamin}</td>
-                        <td className="px-6 py-4">{data.tempat_lahir}</td>
-                        <td className="px-6 py-4">
-                          {' '}
-                          {data.tanggal_lahir
-                            ? new Date(data.tanggal_lahir).toLocaleString('id-ID', {
-                                day: '2-digit',
-                                month: 'long',
-                                year: 'numeric',
-                                hour12: false,
-                              })
-                            : 'Tidak tersedia'}
-                        </td>
-                        <td className="px-6 py-4">{data.alamat}</td>
                         <td className="px-6 py-4">{data.email}</td>
                         <td className="px-6 py-4 flex gap-2">
                           <button onClick={() => handleEditClick(data)} className="text-[#00B686] hover:text-[#007f5f] text-lg">
@@ -272,6 +249,9 @@ const Datapasien = () => {
                           </button>
                           <button onClick={() => handleDeleteClick(data)} className="text-red-500 hover:text-red-700 text-lg">
                             <FaTrash />
+                          </button>
+                          <button onClick={() => handleDetailClick(data)} className="text-blue-500 hover:text-blue-700 text-lg">
+                            <FaEye />
                           </button>
                         </td>
                       </tr>
@@ -292,6 +272,7 @@ const Datapasien = () => {
           <Modalpasien modalpasien={modalpasien} setModalpasien={setModalpasien} loading={loading} data={selectedPasien} onClose={handleCloseModal} onUpdate={handleUpdate} />
         </div>
         <Modaldelete modaldelete={modaldelete} setModaldelete={setModaldelete} loading={loading} data={selectedPasien} onClose={handleCloseModal} onDelete={handleDelete} />
+        <ModalDetailPasien show={modalDetail} setModalDetail={setModalDetail} data={selectedPasien} />
       </div>
     </>
   );

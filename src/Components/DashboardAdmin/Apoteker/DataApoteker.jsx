@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../../utils/api';
-import { FaEdit, FaTrash, FaClinicMedical } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaClinicMedical, FaEye } from 'react-icons/fa';
 import TambahApoteker from './TambahApoteker';
 import ModalEditApotker from './ModalEditApotker';
 import ModalDeleteApoteker from './ModalDeleteApoteker';
 import { FaFileExcel, FaFilePdf } from 'react-icons/fa6';
+import ModalDetailApoteker from './ModalDetailApoteker';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import * as XLSX from 'xlsx';
@@ -18,7 +19,7 @@ const DataApoteker = () => {
   const [OpenDelete, setOpenDelete] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
-
+  const [modalDetail, setModalDetail] = useState(false);
   const fetchApoteker = async () => {
     try {
       const res = await api.get('/apoteker/getapoteker');
@@ -68,7 +69,10 @@ const DataApoteker = () => {
     setOpenDelete(true);
     setselectedApotek(datas);
   };
-
+  const handleDetailClick = (datas) => {
+    setselectedApotek(datas);
+    setModalDetail(true);
+  };
   const exportApotekerToPDF = () => {
     const doc = new jsPDF();
 
@@ -81,7 +85,7 @@ const DataApoteker = () => {
       body: rows,
       startY: 20,
       styles: { fontSize: 8 },
-      headStyles: { fillColor: [0, 182, 134] }, // hijau sesuai tema
+      headStyles: { fillColor: [0, 182, 134] },
     });
 
     doc.save('data-apoteker.pdf');
@@ -192,6 +196,9 @@ const DataApoteker = () => {
                           <button type="button" onClick={() => handleDeleteClick(datas)} className="focus:outline-none text-red-400  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
                             <FaTrash />
                           </button>
+                          <button type="button" onClick={() => handleDetailClick(datas)} className="focus:outline-none text-blue-400 hover:text-blue-600 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
+                            <FaEye />
+                          </button>
                         </td>
                       </tr>
                     ))
@@ -201,6 +208,7 @@ const DataApoteker = () => {
           </div>
         </div>
       </div>
+      <ModalDetailApoteker show={modalDetail} setModalDetail={setModalDetail} data={selectedApotek} />
       <ModalEditApotker onUpdate={handleUpdate} loading={loading} datas={selectedApotek} setOpenEdit={setOpenEdit} OpenEdit={OpenEdit} />
       <ModalDeleteApoteker onDelete={handleDelete} loading={loading} datas={selectedApotek} setOpenDelete={setOpenDelete} OpenDelete={OpenDelete} />
     </>

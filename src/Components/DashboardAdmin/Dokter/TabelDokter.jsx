@@ -1,11 +1,12 @@
 import React from 'react';
 import TambahDokter from './TambahDokter';
 import api from '../../../utils/api';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaEye, FaTrash } from 'react-icons/fa';
 import { Modal, ModalBody, ModalHeader, ModalFooter } from 'flowbite-react';
 import { IoIosAlert } from 'react-icons/io';
 import { useEffect, useState } from 'react';
-import { FaUserDoctor ,FaFileExcel ,FaFilePdf} from "react-icons/fa6";
+import { FaUserDoctor, FaFileExcel, FaFilePdf } from 'react-icons/fa6';
+import ModalDetailDokter from './ModalDetailDokter';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import * as XLSX from 'xlsx';
@@ -15,9 +16,11 @@ const TabelDokter = () => {
   const [openModalEdit, setModalEdit] = useState(false);
   const [openModalDelete, setModalDelete] = useState(false);
   const [selectDokter, setSelectDokter] = useState(null);
+  const [ModalDetail, setModalDetail] = useState(false);
+
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
-const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const [formData, setFormData] = useState({
     nama: '',
@@ -72,6 +75,10 @@ const [searchTerm, setSearchTerm] = useState('');
     setSelectDokter(dokter);
     setModalDelete(true);
   };
+  const handleDetailClick = (dokter) => {
+    setSelectDokter(dokter);
+    setModalDetail(true);
+  };
   useEffect(() => {
     fetchdokter();
     if (selectDokter) {
@@ -84,49 +91,43 @@ const [searchTerm, setSearchTerm] = useState('');
     }
   }, [selectDokter]);
 
-const exportDokterToPDF = () => {
-  const doc = new jsPDF();
+  const exportDokterToPDF = () => {
+    const doc = new jsPDF();
 
-  const columns = ['ID', 'Nama Dokter', 'Email', 'Poli', 'Role'];
-  const rows = Datadokter.map(dokter => [
-    dokter.id,
-    dokter.nama,
-    dokter.email,
-    dokter.poli,
-    dokter.role,
-  ]);
+    const columns = ['ID', 'Nama Dokter', 'Email', 'Poli', 'Role'];
+    const rows = Datadokter.map((dokter) => [dokter.id, dokter.nama, dokter.email, dokter.poli, dokter.role]);
 
-  doc.text('Data Dokter', 14, 15);
-  doc.autoTable({
-    head: [columns],
-    body: rows,
-    startY: 20,
-    styles: { fontSize: 8 },
-    headStyles: { fillColor: [0, 182, 134] },
-  });
+    doc.text('Data Dokter', 14, 15);
+    doc.autoTable({
+      head: [columns],
+      body: rows,
+      startY: 20,
+      styles: { fontSize: 8 },
+      headStyles: { fillColor: [0, 182, 134] },
+    });
 
-  doc.save('data-dokter.pdf');
-};
+    doc.save('data-dokter.pdf');
+  };
 
-const exportDokterToExcel = () => {
-  const worksheetData = Datadokter.map(dokter => ({
-    ID: dokter.id,
-    'Nama Dokter': dokter.nama,
-    Email: dokter.email,
-    Poli: dokter.poli,
-    Role: dokter.role,
-  }));
+  const exportDokterToExcel = () => {
+    const worksheetData = Datadokter.map((dokter) => ({
+      ID: dokter.id,
+      'Nama Dokter': dokter.nama,
+      Email: dokter.email,
+      Poli: dokter.poli,
+      Role: dokter.role,
+    }));
 
-  const worksheet = XLSX.utils.json_to_sheet(worksheetData);
-  const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.json_to_sheet(worksheetData);
+    const workbook = XLSX.utils.book_new();
 
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Dokter');
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Dokter');
 
-  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-  const data = new Blob([excelBuffer], { type: 'application/octet-stream' });
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const data = new Blob([excelBuffer], { type: 'application/octet-stream' });
 
-  saveAs(data, 'data-dokter.xlsx');
-};
+    saveAs(data, 'data-dokter.xlsx');
+  };
 
   return (
     <>
@@ -139,49 +140,39 @@ const exportDokterToExcel = () => {
           <span class="font-medium">{error}</span>
         </div>
       ) : null}
-    <div className="bg-black rounded-t-lg shadow-lg mt-5 w-full">
-  <div className="flex flex-col md:flex-row gap-4 justify-between py-2 items-center min-h-[70px] w-full lg:px-6 text-white">
+      <div className="bg-black rounded-t-lg shadow-lg mt-5 w-full">
+        <div className="flex flex-col md:flex-row gap-4 justify-between py-2 items-center min-h-[70px] w-full lg:px-6 text-white">
+          <div className="flex items-center gap-3">
+            <FaUserDoctor className="text-[30px]" />
+            <p className="font-bold text-[20px]">Data Dokter</p>
+          </div>
 
-  <div className="flex items-center gap-3">
-    <FaUserDoctor className="text-[30px]" />
-    <p className="font-bold text-[20px]">Data Dokter</p>
-  </div>
+          <div className="flex flex-col md:flex-row gap-3">
+            <TambahDokter fetchdokter={fetchdokter} />
 
-  <div className="flex flex-col md:flex-row gap-3">
-    <TambahDokter fetchdokter={fetchdokter} />
+            <button
+              type="button"
+              onClick={exportDokterToPDF}
+              className="flex items-center gap-2 text-white bg-red-600 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 transition duration-150"
+            >
+              <FaFilePdf className="text-[18px]" />
+              Unduh PDF
+            </button>
 
-    <button
-      type="button"
-      onClick={exportDokterToPDF}
-      className="flex items-center gap-2 text-white bg-red-600 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 transition duration-150"
-    >
-      <FaFilePdf className="text-[18px]" />
-      Unduh PDF
-    </button>
-
-    <button
-      type="button"
-        onClick={exportDokterToExcel}
-      className="flex items-center gap-2 text-white bg-green-600 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 transition duration-150"
-    >
-      <FaFileExcel className="text-[18px]" />
-      Unduh Excel
-    </button>
-  </div>
-
-</div>
-</div>
-
-
+            <button
+              type="button"
+              onClick={exportDokterToExcel}
+              className="flex items-center gap-2 text-white bg-green-600 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 transition duration-150"
+            >
+              <FaFileExcel className="text-[18px]" />
+              Unduh Excel
+            </button>
+          </div>
+        </div>
+      </div>
 
       <div className="bg-white shadow-lg rounded-b-lg flex flex-col px-5 justify-center items-center to-red-500 w-full min-h-[100px] ">
-         <input
-       type="text"
-  placeholder="Cari Nama Dokter..."
-  value={searchTerm}
-  onChange={(e) => setSearchTerm(e.target.value)}
-      className="border border-gray-300 mt-3 rounded-lg px-4 py-2 w-full "
-    />
+        <input type="text" placeholder="Cari Nama Dokter..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="border border-gray-300 mt-3 rounded-lg px-4 py-2 w-full " />
         <div class="relative overflow-x-auto shadow-lg my-[20px] w-full mx-[10px]">
           <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-white  uppercase bg-gray-50 ">
@@ -213,18 +204,14 @@ const exportDokterToExcel = () => {
                     Tidak ada Data Dokter
                   </td>
                 </tr>
-              ) : Datadokter.filter((data) =>
-      data.nama.toLowerCase().includes(searchTerm.toLowerCase())
-    ).length === 0 ? (
-    <tr>
-      <td colSpan="7" className="text-center py-4 text-gray-500">
-        Data tidak ditemukan
-      </td>
-    </tr>
-  ) : (
-                Datadokter.filter((data) =>
-      data.nama.toLowerCase().includes(searchTerm.toLowerCase())
-    ).map((dokter) => (
+              ) : Datadokter.filter((data) => data.nama.toLowerCase().includes(searchTerm.toLowerCase())).length === 0 ? (
+                <tr>
+                  <td colSpan="7" className="text-center py-4 text-gray-500">
+                    Data tidak ditemukan
+                  </td>
+                </tr>
+              ) : (
+                Datadokter.filter((data) => data.nama.toLowerCase().includes(searchTerm.toLowerCase())).map((dokter) => (
                   <tr key={dokter.id} class=" border-b bg-white hover:bg-gray-50 text-black border-gray-200">
                     <td class="px-6 py-4">{dokter.id}</td>
                     <td class="px-6 py-4">{dokter.nama}</td>
@@ -237,6 +224,9 @@ const exportDokterToExcel = () => {
                       </button>
                       <button type="button" onClick={() => handleDeleteClick(dokter)} className="focus:outline-none text-red-400  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
                         <FaTrash />
+                      </button>
+                      <button onClick={() => handleDetailClick(dokter)} type="button" className="focus:outline-none text-blue-400 hover:text-blue-600  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
+                        <FaEye />
                       </button>
                     </td>
                   </tr>
@@ -307,6 +297,7 @@ const exportDokterToExcel = () => {
           </button>
         </ModalFooter>
       </Modal>
+      <ModalDetailDokter data={selectDokter} show={ModalDetail} setModalDetail={setModalDetail} />
     </>
   );
 };

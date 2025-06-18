@@ -61,7 +61,7 @@ const RiwayatMedis = () => {
                   <td className="px-4 py-3">Dr. {item.nama_dokter}</td>
                   <td className="px-4 py-3">{item.diagnosa}</td>
                   <td className="px-4 py-3">{item.tindakan}</td>
-                  <td className="px-4 py-3">{item.obat}</td>
+                  <td className="px-4 py-3">{item.nama_obat}</td>
                 </tr>
               ))
             )}
