@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../../utils/api';
-import { FaPlus } from "react-icons/fa6";
+import { FaPlus } from 'react-icons/fa6';
 
 const TambahJadwal = ({ data }) => {
   const [modaltambah, setModalTambah] = useState(false);
   const [Datadokter, SetdataDokter] = useState([]);
-  const [loading , setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const fetchdokter = async () => {
     try {
       const response = await api.get('/dokter/getdokter');
@@ -30,28 +30,28 @@ const TambahJadwal = ({ data }) => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true)
+    setLoading(true);
     try {
       const response = await api.post('/jadwal/create', fromData);
+      console.log(fromData);
       setModalTambah(false);
-      setLoading(false)
+      setLoading(false);
       await data();
     } catch (err) {
       console.log(err.response?.data.message);
       setModalTambah(false);
-      setLoading(false)
+      setLoading(false);
     }
   };
   return (
     <>
-      
       <button
-  onClick={() => setModalTambah(true)}
-  className="flex items-center gap-2 text-white bg-[#00B686] hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 transition duration-150"
->
-  <FaPlus className="text-[20px]" />
-  Tambah Jadwal
-</button>
+        onClick={() => setModalTambah(true)}
+        className="flex items-center gap-2 text-white bg-[#00B686] hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 transition duration-150"
+      >
+        <FaPlus className="text-[20px]" />
+        Tambah Jadwal
+      </button>
       <div tabIndex="-1" aria-hidden="true" className={`fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center ${modaltambah ? 'flex' : 'hidden'}`}>
         <div className="bg-white p-6 rounded-lg w-full max-w-2xl">
           <div className="flex justify-between items-center border-b pb-3 mb-4">
@@ -95,7 +95,7 @@ const TambahJadwal = ({ data }) => {
             </select>
 
             <button type="submit" className="w-full bg-teal-500 text-white py-3 rounded hover:bg-teal-600">
-              {loading ? 'Menyimpan...':'Tambah Jadwal'}
+              {loading ? 'Menyimpan...' : 'Tambah Jadwal'}
             </button>
           </form>
         </div>
